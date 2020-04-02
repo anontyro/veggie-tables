@@ -1,5 +1,5 @@
 import { OK, BAD_REQUEST } from 'http-status-codes';
-import { Controller, Get, Post, Delete } from '@overnightjs/core';
+import { Controller, Get, Post, Delete, Put } from '@overnightjs/core';
 import { Logger } from '@overnightjs/logger';
 import { Request, Response } from 'express';
 import connection from '../connection';
@@ -55,6 +55,31 @@ class StockController {
         const item: Stock = req.body;
         const nextItem = connection.manager.create(Stock, item);
         const results = await connection.manager.save(nextItem);
+        return res.status(OK).json({
+          response: results,
+        });
+      });
+    } catch (err) {
+      Logger.Err(err, true);
+      return res.status(BAD_REQUEST).json({
+        error: err.message,
+        response: {},
+      });
+    }
+  }
+
+  @Put(':id')
+  private updateItem(req: Request, res: Response) {
+    try {
+      connection.then(async connection => {
+        const { id } = req.params;
+        const item: Stock = await connection.manager.findOne(Stock, {
+          where: {
+            id,
+          },
+        });
+        connection.manager.merge(Stock, item, req.body);
+        const results = await connection.manager.save(item);
         return res.status(OK).json({
           response: results,
         });
