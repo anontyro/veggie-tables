@@ -16,11 +16,12 @@ class MainServer extends Server {
 
   constructor() {
     super(true);
-    const { UserController } = controllers;
+    const { UserController, StockController } = controllers;
     const userController = new UserController();
+    const stockController = new StockController();
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: true }));
-    super.addControllers([userController]);
+    super.addControllers([userController, stockController]);
     if (this.isProduction) {
       this.app.use('/static', express.static(this.staticPath));
       this.app.get('*', (req, res) => res.sendFile(this.reactPath));
