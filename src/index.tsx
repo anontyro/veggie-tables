@@ -12,6 +12,7 @@ import rootReducer from './redux';
 import './assets/main.css';
 import HomePage from './pages/Home';
 import Cart from './pages/Checkout/Cart';
+import Item from './pages/Item';
 
 const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
 
@@ -21,6 +22,7 @@ ReactDOM.render(
       <Route exact path="/" component={HomePage} />
       <Route exact path="/cart" component={Cart} />
       <Route exact path="/user" component={User} />
+      <Route path="/item/:id" component={Item} />
     </Provider>
   </Router>,
 
