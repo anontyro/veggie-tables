@@ -15,12 +15,13 @@ export const INITIAL_STATE: CartState = {
   cart: [],
 };
 
-const cart = (state: CartState = INITIAL_STATE, action: CartActions): CartState => {
+const userCart = (state: CartState = INITIAL_STATE, action: CartActions): CartState => {
   switch (action.type) {
     case ADD_ITEM_TO_CART:
+      const cart = addToCart(state.cart, action.payload);
       return {
         ...state,
-        cart: addToCart(state.cart, action.payload),
+        cart,
       };
     case REMOVE_ITEM_FROM_CART:
       return {
@@ -40,16 +41,18 @@ const removeFromCart = (cart: CartItem[], id: number) => {
   const output: CartItem[] = cart.map(cartItem => {
     if (cartItem.item.id === id) {
       if (cartItem.quantity > 1) {
+        cartItem.quantity--;
         return {
           ...cartItem,
-          quantity: cartItem.quantity--,
         };
+      } else {
+        return null;
       }
     } else {
       return cartItem;
     }
   });
-  return output;
+  return output.filter(cartItem => cartItem !== null);
 };
 
 const addToCart = (cart: CartItem[], item: StockItem): CartItem[] => {
@@ -57,9 +60,9 @@ const addToCart = (cart: CartItem[], item: StockItem): CartItem[] => {
   const output: CartItem[] = cart.map(cartItem => {
     if (cartItem.item.id === item.id) {
       toAdd = false;
+      cartItem.quantity++;
       return {
         ...cartItem,
-        quantity: cartItem.quantity++,
       };
     }
     return cartItem;
@@ -73,4 +76,4 @@ const addToCart = (cart: CartItem[], item: StockItem): CartItem[] => {
   return output;
 };
 
-export default cart;
+export default userCart;

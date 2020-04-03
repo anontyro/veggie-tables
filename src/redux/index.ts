@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
 import user from './modules/user/reducer';
 import stock from './modules/stock/reducer';
-import cart from './modules/cart/reducer';
+import userCart from './modules/cart/reducer';
 
 const rootReducer = combineReducers({
   user,
   stock,
-  cart,
+  userCart,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
