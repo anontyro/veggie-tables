@@ -27,7 +27,7 @@ const MainNav = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column-reverse;
-  justify-content: space-between;
+  justify-content: flex-end;
   color: white;
   padding: 20px;
   @media screen and (min-width: 600px) {
@@ -84,6 +84,9 @@ const MainLayout: React.FC<Props> = ({ children, isBusy }) => {
         <NavMenu>
           <NavLink isActive={pathname === '/'} to="/">
             Home
+          </NavLink>
+          <NavLink isActive={pathname === '/cart'} to="/cart">
+            Cart
           </NavLink>
         </NavMenu>
       </MainNav>

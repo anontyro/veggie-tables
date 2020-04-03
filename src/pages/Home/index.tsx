@@ -5,6 +5,7 @@ import { RootState } from '../../redux';
 import * as stockActions from '../../redux/modules/stock/actions';
 import MainLayout from '../_layout/MainLayout';
 import { StockState } from '../../redux/modules/stock/reducer';
+import { MainHeader } from '../../components/Headers/MainHeader';
 
 const HomePage: React.FC = () => {
   const dispatch = useDispatch();
@@ -18,7 +19,7 @@ const HomePage: React.FC = () => {
   return (
     <MainLayout isBusy={isBusy}>
       <React.Fragment>
-        <h1>Home</h1>
+        <MainHeader text="Home" />
         <div className="flex flex-row flex-wrap">
           {stockList.map(item => (
             <div

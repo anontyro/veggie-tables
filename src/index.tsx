@@ -11,6 +11,7 @@ import * as serviceWorker from './serviceWorker';
 import rootReducer from './redux';
 import './assets/main.css';
 import HomePage from './pages/Home';
+import Cart from './pages/Checkout/Cart';
 
 const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
 
@@ -18,6 +19,7 @@ ReactDOM.render(
   <Router>
     <Provider store={store}>
       <Route exact path="/" component={HomePage} />
+      <Route exact path="/cart" component={Cart} />
       <Route exact path="/user" component={User} />
     </Provider>
   </Router>,
