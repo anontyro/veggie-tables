@@ -41,7 +41,7 @@
     "start": "run-p start:client start:server",
     "build": "npm run build:clean && npm run copyEnv && npm run build:client && npm run build:server",
     "build:client": "npm run build:css && react-scripts build",
-    "build:server": "npx tsc -p tsconfig.server.json",
+    "build:server": "npx tsc -p tsconfig.server.json && cp -rf ./server/static ./build/",
     "prod:server": "NODE_ENV=production node ./build/start.js",
     "build:clean": "rm -rf build && mkdir build",
     "copyEnv": "cp .env ./build",

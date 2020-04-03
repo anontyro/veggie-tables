@@ -22,8 +22,8 @@ class MainServer extends Server {
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: true }));
     super.addControllers([userController, stockController]);
+    this.app.use('/static', express.static(this.staticPath));
     if (this.isProduction) {
-      this.app.use('/static', express.static(this.staticPath));
       this.app.get('*', (req, res) => res.sendFile(this.reactPath));
     }
   }
