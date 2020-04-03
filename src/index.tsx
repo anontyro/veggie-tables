@@ -6,18 +6,18 @@ import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './index.css';
-import App from './App';
-import User from './components/pages/User';
+import User from './pages/User';
 import * as serviceWorker from './serviceWorker';
 import rootReducer from './redux';
 import './assets/main.css';
+import HomePage from './pages/Home';
 
 const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
 
 ReactDOM.render(
   <Router>
     <Provider store={store}>
-      <Route exact path="/" component={App} />
+      <Route exact path="/" component={HomePage} />
       <Route exact path="/user" component={User} />
     </Provider>
   </Router>,

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, connect } from 'react-redux';
-import * as userActions from '../../../redux/modules/user/actions';
-import { RootState } from '../../../redux';
+import * as userActions from '../../redux/modules/user/actions';
+import { RootState } from '../../redux';
 
 interface Props {
   username: string | null;
