@@ -3,7 +3,7 @@ import { COLOURS } from '../../../enum/colours';
 
 export const MainNav = styled.div`
   height: 60px;
-  background-color: black;
+  background-color: #bcdbff;
   width: 100%;
   display: flex;
   flex-direction: column-reverse;
@@ -32,7 +32,7 @@ export const PageContent = styled.div`
 `;
 
 export const MainFooter = styled.div`
-  background-color: black;
+  background-color: #bcdbff;
   width: 100%;
   display: flex;
   justify-content: center;
