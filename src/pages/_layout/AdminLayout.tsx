@@ -16,18 +16,18 @@ interface Props {
   isBusy?: boolean;
 }
 
-const MainLayout: React.FC<Props> = ({ children, isBusy }) => {
+const AdminLayout: React.FC<Props> = ({ children, isBusy }) => {
   const { pathname } = useLocation();
 
   return (
     <React.Fragment>
       <MainNav>
         <NavMenu>
-          <NavLink isActive={pathname === '/'} to="/">
-            Home
+          <NavLink isActive={pathname === '/admin/item-list'} to="/admin/item-list">
+            Item List
           </NavLink>
-          <NavLink isActive={pathname === '/cart'} to="/cart">
-            Cart
+          <NavLink isActive={pathname === '/admin/add-item'} to="/admin/add-item">
+            Add Item
           </NavLink>
         </NavMenu>
       </MainNav>
@@ -46,4 +46,4 @@ const MainLayout: React.FC<Props> = ({ children, isBusy }) => {
   );
 };
 
-export default MainLayout;
+export default AdminLayout;
