@@ -14,12 +14,12 @@ export default class Stock extends BaseEntity {
   @Column({ default: 'SGD' })
   currency: string;
 
-  @Column({ nullable: true, name: 'image_url' })
+  @Column({ nullable: true, default: '/static/images/default_placeholder.png', name: 'image_url' })
   imageUrl: string;
 
   @Column({ default: 0, name: 'stock_level' })
   stockLevel: number;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'text' })
   description: string;
 }
