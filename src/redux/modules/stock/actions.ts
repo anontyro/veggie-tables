@@ -51,11 +51,11 @@ const fetchedItemDetails = (stockItem: StockItem): FetchedItemDetails => ({
   payload: stockItem,
 });
 
-export const fetchStockList = () => {
+export const fetchStockList = (getFresh = false) => {
   return async (dispatch: ThunkDispatch<unknown, undefined, StockActions>, getState) => {
     const state: RootState = getState();
 
-    if (state.stock.stockList.length > 0) {
+    if (state.stock.stockList.length > 0 && !getFresh) {
       return;
     }
 

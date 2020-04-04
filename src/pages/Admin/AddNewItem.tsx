@@ -5,6 +5,8 @@ import { StockItem } from '../../../types/Stock';
 import { defaultButton } from '../../components/Buttons/btnStyles';
 import { useHistory } from 'react-router-dom';
 import { BACKEND_ROUTES } from '../../enum/routes';
+import { useDispatch } from 'react-redux';
+import * as stockActions from '../../redux/modules/stock/actions';
 
 interface StandardInputProps {
   value: any;
@@ -43,6 +45,7 @@ const defaultItem: Partial<StockItem> = {
 
 const AddNewItem: React.FC = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [nextItem, setNextItem] = useState<Partial<StockItem>>(defaultItem);
 
@@ -58,6 +61,7 @@ const AddNewItem: React.FC = () => {
         });
         setIsSubmitted(false);
         setNextItem(defaultItem);
+        dispatch(stockActions.fetchStockList(true));
         history.push('/admin/item-list');
       } catch (err) {
         console.error(err);
