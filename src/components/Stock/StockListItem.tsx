@@ -15,7 +15,7 @@ const StockListItem: React.FC<StockListItemProps> = ({ item }) => {
       className="sm:w-48 p-2 m-2 bg-gray-300 hover:bg-gray-500 rounded border-gray-400 h-56 flex flex-col w-full"
     >
       <img
-        src={`${item.imageUrl}`}
+        src={`${item?.imageUrl}`}
         alt={item.name}
         className="object-fill w-32 h-32 flex m-auto rounded"
       />
