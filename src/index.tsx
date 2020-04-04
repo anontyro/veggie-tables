@@ -13,6 +13,8 @@ import './assets/main.css';
 import HomePage from './pages/Home';
 import Cart from './pages/Checkout/Cart';
 import Item from './pages/Item';
+import AddNewItem from './pages/Admin/AddNewItem';
+import ItemList from './pages/Admin/ItemList';
 
 const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
 
@@ -23,6 +25,8 @@ ReactDOM.render(
       <Route exact path="/cart" component={Cart} />
       <Route exact path="/user" component={User} />
       <Route path="/item/:id" component={Item} />
+      <Route exact path="/admin/add-item" component={AddNewItem} />
+      <Route exact path="/admin/item-list" component={ItemList} />
     </Provider>
   </Router>,
 
