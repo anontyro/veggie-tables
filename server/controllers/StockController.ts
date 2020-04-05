@@ -4,6 +4,7 @@ import { Logger } from '@overnightjs/logger';
 import { Request, Response } from 'express';
 import connection from '../connection';
 import Stock from '../database/stock/entity';
+import { Like } from 'typeorm';
 
 @Controller('api/stock/')
 class StockController {
@@ -11,9 +12,28 @@ class StockController {
   private getAllItems(req: Request, res: Response) {
     try {
       connection.then(async connection => {
-        const itemList: Stock[] = await connection.manager.find(Stock);
+        let output: Stock[] = [];
+        const { name, price } = req.query;
+        // if name query search for name
+        if (name) {
+          output = await connection.manager.find(Stock, {
+            where: {
+              name: Like(`%${name}%`),
+            },
+          });
+          // if price query search for price
+        } else if (price) {
+          output = await connection.manager.find(Stock, {
+            where: {
+              unitPrice: Like(`${price}%`),
+            },
+          });
+          // when no query just get the list
+        } else {
+          output = await connection.manager.find(Stock);
+        }
         return res.status(OK).json({
-          response: itemList,
+          response: output,
         });
       });
     } catch (err) {
