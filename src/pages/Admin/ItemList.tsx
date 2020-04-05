@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import AdminLayout from '../_layout/AdminLayout';
 import { MainHeader } from '../../components/Headers/MainHeader';
@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { StockState } from '../../redux/modules/stock/reducer';
 import { RootState } from '../../redux';
 import * as stockActions from '../../redux/modules/stock/actions';
+import { BACKEND_ROUTES } from '../../enum/routes';
+import { removeButton } from '../../components/Buttons/btnStyles';
 
 const Desc = styled.p`
   display: -webkit-box;
@@ -22,6 +24,28 @@ const ItemList: React.FC = () => {
   useEffect(() => {
     dispatch(stockActions.fetchStockList());
   }, []);
+
+  const [removeId, setRemoveId] = useState(-1);
+  useEffect(() => {
+    const removeItem = async () => {
+      try {
+        await fetch(`${BACKEND_ROUTES.STOCK_ROOT}/${removeId}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        setRemoveId(-1);
+        dispatch(stockActions.fetchStockList(true));
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    if (removeId > -1) {
+      removeItem();
+    }
+  }, [removeId]);
+
   return (
     <AdminLayout>
       <React.Fragment>
@@ -43,7 +67,7 @@ const ItemList: React.FC = () => {
                 </div>
               </div>
               <div className="mx-6 text-right">
-                <button className="text-purple-600 hover:text-purple-900 border border-purple-600 hover:border-purple-900 rounded py-1 px-4">
+                <button onClick={() => setRemoveId(stockItem.id)} className={removeButton}>
                   Delete
                 </button>
               </div>
