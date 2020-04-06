@@ -82,6 +82,7 @@ export const fetchItemDetail = (id: number) => {
 
     if (itemInStore) {
       dispatch(fetchedItemDetails(itemInStore));
+      return;
     }
 
     dispatch(fetchingItemDetails());
