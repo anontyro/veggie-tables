@@ -66,7 +66,7 @@ const AdminLogin: React.FC<Props> = () => {
 
   return (
     <React.Fragment>
-      <MainHeader text="Login" />
+      <MainHeader text="Veggie Tables Admin Login" />
       <div className="w-full my-4">
         <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 sm:max-w-xs m-auto">
           <div className="mb-4">
@@ -113,7 +113,7 @@ const AdminLogin: React.FC<Props> = () => {
               }
             }}
             className={defaultButton}
-            type="button"
+            type="submit"
           >
             Sign In
           </button>

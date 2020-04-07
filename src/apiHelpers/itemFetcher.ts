@@ -16,14 +16,20 @@ const itemFetcher = async ({
   onFetched = () => {},
 }: ItemFetcher) => {
   try {
-    const response = await fetch(url, {
+    const options = {
       method,
       headers: {
         'Content-Type': 'application/json',
         ...extraHeaders,
       },
       body: JSON.stringify(body),
-    });
+    };
+
+    if (HTTP_VERB.GET) {
+      delete options.body;
+    }
+
+    const response = await fetch(url, options);
 
     const json = await response.json();
     onFetched();

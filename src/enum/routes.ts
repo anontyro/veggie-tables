@@ -14,6 +14,6 @@ export const FRONTEND_ROUTES = {
   ADMIN: {
     LOGIN: '/admin/login',
     ITEM_LIST: '/admin/item-list',
-    ADD_ITEM: '/add-item',
+    ADD_ITEM: '/admin/add-item',
   },
 };
