@@ -3,10 +3,14 @@ import AdminLayout from '../_layout/AdminLayout';
 import { MainHeader } from '../../components/Headers/MainHeader';
 import { StockItem } from '../../../types/Stock';
 import { defaultButton } from '../../components/Buttons/btnStyles';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams, useLocation } from 'react-router-dom';
 import { BACKEND_ROUTES, FRONTEND_ROUTES } from '../../enum/routes';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as stockActions from '../../redux/modules/stock/actions';
+import { RootState } from '../../redux';
+import { StockState } from '../../redux/modules/stock/reducer';
+import HTTP_VERB from '../../enum/http';
+import itemFetcher from '../../apiHelpers/itemFetcher';
 
 interface StandardInputProps {
   value: any;
@@ -43,33 +47,57 @@ const defaultItem: Partial<StockItem> = {
   stockLevel: 0,
 };
 
+const useQuery = () => new URLSearchParams(useLocation().search);
+
 const AddNewItem: React.FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
+  const stockState: StockState = useSelector((state: RootState) => state.stock);
+  const query = useQuery();
+  const id = parseInt(query.get('id')) || null;
+  const { currentItem } = stockState;
+
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [nextItem, setNextItem] = useState<Partial<StockItem>>(defaultItem);
+  const headerText = id ? `Update ${currentItem?.name}` : `Add New Item `;
 
   useEffect(() => {
-    const addItem = async () => {
-      try {
-        await fetch(BACKEND_ROUTES.STOCK_ROOT, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(nextItem),
-        });
-        setIsSubmitted(false);
-        setNextItem(defaultItem);
-        dispatch(stockActions.fetchStockList(true));
-        history.push(FRONTEND_ROUTES.ADMIN.ADD_ITEM);
-      } catch (err) {
-        console.error(err);
-      }
+    if (id) {
+      dispatch(stockActions.fetchItemDetail(+id));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (id && currentItem?.id === +id) {
+      setNextItem({
+        ...nextItem,
+        ...currentItem,
+      });
+    }
+  }, [currentItem]);
+
+  useEffect(() => {
+    const onFetched = () => {
+      setIsSubmitted(false);
+      setNextItem(defaultItem);
+      dispatch(stockActions.fetchStockList(true));
+      history.push(FRONTEND_ROUTES.ADMIN.ITEM_LIST);
     };
 
-    if (nextItem.name.length > 0 && isSubmitted) {
-      addItem();
+    if (nextItem.name.length > 0 && isSubmitted && !id) {
+      itemFetcher({
+        url: BACKEND_ROUTES.STOCK_ROOT,
+        method: HTTP_VERB.POST,
+        body: nextItem,
+        onFetched: onFetched,
+      });
+    } else if (nextItem.name.length > 0 && isSubmitted && id) {
+      itemFetcher({
+        url: `${BACKEND_ROUTES.STOCK_ROOT}/${currentItem.id}`,
+        method: HTTP_VERB.PUT,
+        body: nextItem,
+        onFetched: onFetched,
+      });
     } else {
       setIsSubmitted(false);
     }
@@ -78,7 +106,7 @@ const AddNewItem: React.FC = () => {
   return (
     <AdminLayout>
       <React.Fragment>
-        <MainHeader text="Add New Item" />
+        <MainHeader text={headerText} />
         <div className="w-full sm:max-w-lg m-auto">
           <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
             <StandardInput
@@ -123,18 +151,33 @@ const AddNewItem: React.FC = () => {
                 });
               }}
             />
-            <button
-              className={`${defaultButton}`}
-              onClick={(event: React.MouseEvent) => {
-                event.preventDefault();
-                console.log(nextItem);
-                if (nextItem.name.length > 0) {
-                  setIsSubmitted(true);
-                }
-              }}
-            >
-              Add Item
-            </button>
+            {id ? (
+              <button
+                className={`${defaultButton}`}
+                onClick={(event: React.MouseEvent) => {
+                  event.preventDefault();
+                  console.log(nextItem);
+                  if (nextItem.name.length > 0) {
+                    setIsSubmitted(true);
+                  }
+                }}
+              >
+                Update Item
+              </button>
+            ) : (
+              <button
+                className={`${defaultButton}`}
+                onClick={(event: React.MouseEvent) => {
+                  event.preventDefault();
+                  console.log(nextItem);
+                  if (nextItem.name.length > 0) {
+                    setIsSubmitted(true);
+                  }
+                }}
+              >
+                Add Item
+              </button>
+            )}
           </form>
         </div>
       </React.Fragment>

@@ -8,6 +8,7 @@ import { StockItem } from '../../../../types/Stock';
 import { ThunkDispatch } from 'redux-thunk';
 import { RootState } from '../..';
 import { BACKEND_ROUTES } from '../../../enum/routes';
+import itemFetcher from '../../../apiHelpers/itemFetcher';
 
 interface FetchingStockList {
   type: FETCHING_STOCK_LIST;
@@ -61,8 +62,8 @@ export const fetchStockList = (getFresh = false) => {
 
     dispatch(fetchingStockList());
     try {
-      const response: any = await fetch(BACKEND_ROUTES.STOCK_ROOT);
-      const json: { response: StockItem[] } = await response.json();
+      const json: { response: StockItem[] } = await itemFetcher({ url: BACKEND_ROUTES.STOCK_ROOT });
+
       dispatch(fetchedStockList(json.response));
     } catch (err) {
       console.error(err);
@@ -87,8 +88,10 @@ export const fetchItemDetail = (id: number) => {
 
     dispatch(fetchingItemDetails());
     try {
-      const response: any = await fetch(`${BACKEND_ROUTES.STOCK_ROOT}/${id}`);
-      const json: { response: StockItem } = await response.json();
+      const json: { response: StockItem } = await itemFetcher({
+        url: `${BACKEND_ROUTES.STOCK_ROOT}/${id}`,
+      });
+
       dispatch(fetchedItemDetails(json.response));
     } catch (err) {
       console.error(err);
