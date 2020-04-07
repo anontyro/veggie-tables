@@ -4,7 +4,7 @@ import { MainHeader } from '../../components/Headers/MainHeader';
 import { StockItem } from '../../../types/Stock';
 import { defaultButton } from '../../components/Buttons/btnStyles';
 import { useHistory } from 'react-router-dom';
-import { BACKEND_ROUTES } from '../../enum/routes';
+import { BACKEND_ROUTES, FRONTEND_ROUTES } from '../../enum/routes';
 import { useDispatch } from 'react-redux';
 import * as stockActions from '../../redux/modules/stock/actions';
 
@@ -62,7 +62,7 @@ const AddNewItem: React.FC = () => {
         setIsSubmitted(false);
         setNextItem(defaultItem);
         dispatch(stockActions.fetchStockList(true));
-        history.push('/admin/item-list');
+        history.push(FRONTEND_ROUTES.ADMIN.ADD_ITEM);
       } catch (err) {
         console.error(err);
       }
@@ -70,6 +70,8 @@ const AddNewItem: React.FC = () => {
 
     if (nextItem.name.length > 0 && isSubmitted) {
       addItem();
+    } else {
+      setIsSubmitted(false);
     }
   }, [isSubmitted]);
 
