@@ -10,6 +10,7 @@ import {
   ExternalLink,
 } from './components/LayoutStyles';
 import NavLink, { externalLink } from '../../components/Buttons/NavLink';
+import { FRONTEND_ROUTES } from '../../enum/routes';
 
 interface Props {
   children: React.ReactChild;
@@ -23,10 +24,19 @@ const AdminLayout: React.FC<Props> = ({ children, isBusy }) => {
     <React.Fragment>
       <MainNav>
         <NavMenu>
-          <NavLink isActive={pathname === '/admin/item-list'} to="/admin/item-list">
+          <NavLink isActive={pathname === FRONTEND_ROUTES.HOME} to={FRONTEND_ROUTES.HOME}>
+            Veggie Tables
+          </NavLink>
+          <NavLink
+            isActive={pathname === FRONTEND_ROUTES.ADMIN.ITEM_LIST}
+            to={FRONTEND_ROUTES.ADMIN.ITEM_LIST}
+          >
             Item List
           </NavLink>
-          <NavLink isActive={pathname === '/admin/add-item'} to="/admin/add-item">
+          <NavLink
+            isActive={pathname === FRONTEND_ROUTES.ADMIN.ADD_ITEM}
+            to={FRONTEND_ROUTES.ADMIN.ADD_ITEM}
+          >
             Add Item
           </NavLink>
         </NavMenu>
