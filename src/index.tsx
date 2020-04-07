@@ -15,18 +15,22 @@ import Cart from './pages/Checkout/Cart';
 import Item from './pages/Item';
 import AddNewItem from './pages/Admin/AddNewItem';
 import ItemList from './pages/Admin/ItemList';
+import { FRONTEND_ROUTES } from './enum/routes';
+import AdminLogin from './pages/Admin/AdminLogin';
+import ProtectedRoute from './components/Auth/ProtectedRoute';
 
 const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
 
 ReactDOM.render(
   <Router>
     <Provider store={store}>
-      <Route exact path="/" component={HomePage} />
-      <Route exact path="/cart" component={Cart} />
-      <Route exact path="/user" component={User} />
-      <Route path="/item/:id" component={Item} />
-      <Route exact path="/admin/add-item" component={AddNewItem} />
-      <Route exact path="/admin/item-list" component={ItemList} />
+      <Route exact path={FRONTEND_ROUTES.HOME} component={HomePage} />
+      <Route exact path={FRONTEND_ROUTES.CART} component={Cart} />
+      <Route exact path={FRONTEND_ROUTES.USER} component={User} />
+      <Route path={FRONTEND_ROUTES.ITEM_DETAILS} component={Item} />
+      <ProtectedRoute exact path={FRONTEND_ROUTES.ADMIN.ADD_ITEM} component={AddNewItem} />
+      <ProtectedRoute exact path={FRONTEND_ROUTES.ADMIN.ITEM_LIST} component={ItemList} />
+      <Route exact path={FRONTEND_ROUTES.ADMIN.LOGIN} component={AdminLogin} />
     </Provider>
   </Router>,
 
