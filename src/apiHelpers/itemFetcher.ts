@@ -25,7 +25,7 @@ const itemFetcher = async ({
       body: JSON.stringify(body),
     };
 
-    if (HTTP_VERB.GET) {
+    if (method === HTTP_VERB.GET) {
       delete options.body;
     }
 
