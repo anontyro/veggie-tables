@@ -1,5 +1,9 @@
 import HTTP_VERB from '../enum/http';
 
+export const defaultHeaders = {
+  'Content-Type': 'application/json',
+};
+
 interface ItemFetcher {
   url: string;
   method?: HTTP_VERB;
@@ -19,7 +23,7 @@ const itemFetcher = async ({
     const options = {
       method,
       headers: {
-        'Content-Type': 'application/json',
+        ...defaultHeaders,
         ...extraHeaders,
       },
       body: JSON.stringify(body),

@@ -3,6 +3,8 @@ import { StockItem } from '../../../../types/Stock';
 import { INITIAL_STATE } from './reducer';
 import { FETCHED_STOCK_LIST, FETCHED_ITEM_DETAILS } from './consts';
 import { BACKEND_ROUTES } from '../../../enum/routes';
+import HTTP_VERB from '../../../enum/http';
+import { defaultHeaders } from '../../../apiHelpers/itemFetcher';
 
 const MockItem: StockItem = {
   id: 1,
@@ -30,7 +32,10 @@ describe('StockActions', () => {
       ],
       type: FETCHED_STOCK_LIST,
     });
-    expect(window.fetch).toBeCalledWith(`${BACKEND_ROUTES.STOCK_ROOT}`);
+    expect(window.fetch).toBeCalledWith(BACKEND_ROUTES.STOCK_ROOT, {
+      headers: defaultHeaders,
+      method: HTTP_VERB.GET,
+    });
     expect(mockResolved).toBeCalledTimes(1);
   });
 
@@ -78,7 +83,11 @@ describe('StockActions', () => {
       },
       type: FETCHED_ITEM_DETAILS,
     });
-    expect(window.fetch).toBeCalledWith(`${BACKEND_ROUTES.STOCK_ROOT}/${MOCK_ID}`);
+    expect(window.fetch).toBeCalledWith(`${BACKEND_ROUTES.STOCK_ROOT}/${MOCK_ID}`, {
+      headers: defaultHeaders,
+      method: HTTP_VERB.GET,
+    });
+
     expect(mockResolved).toBeCalledTimes(1);
   });
 
