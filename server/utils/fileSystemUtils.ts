@@ -15,7 +15,11 @@ export const scanDirectories = async (dirName: string, results: FileItem[] = [])
     if (f.isDirectory()) {
       await scanDirectories(fullPath, results);
     } else {
-      const relativePath = fullPath.split('server')[1] || '';
+      let imageFolder = 'server';
+      if (process.env.NODE_ENV === 'production') {
+        imageFolder = 'build';
+      }
+      const relativePath = fullPath.split(imageFolder)[1] || '';
       const name = f.name.split('.');
       if (supportedExtensions.includes(name[1])) {
         results.push({
