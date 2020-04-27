@@ -28,3 +28,7 @@ const user = (state: UserState = INITIAl_STATE, action: UserActions) => {
 };
 
 export default user;
+
+export const getBearerHeader = (state: UserState) => ({
+  Authorization: `Bearer ${state?.token}`,
+});

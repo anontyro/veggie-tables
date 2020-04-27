@@ -11,6 +11,7 @@ import { removeButton } from '../../components/Buttons/btnStyles';
 import { useHistory } from 'react-router-dom';
 import itemFetcher from '../../apiHelpers/itemFetcher';
 import HTTP_VERB from '../../enum/http';
+import { getBearerHeader } from '../../redux/modules/user/reducer';
 
 const Desc = styled.p`
   display: -webkit-box;
@@ -23,6 +24,7 @@ const ItemList: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const stockState: StockState = useSelector((state: RootState) => state.stock);
+  const authHeader = useSelector((state: RootState) => getBearerHeader(state.user));
   const { stockList, isBusy } = stockState;
 
   useEffect(() => {
@@ -35,6 +37,7 @@ const ItemList: React.FC = () => {
       itemFetcher({
         url: `${BACKEND_ROUTES.STOCK_ROOT}/${removeId}`,
         method: HTTP_VERB.DELETE,
+        extraHeaders: authHeader,
         onFetched: () => {
           setRemoveId(-1);
           dispatch(stockActions.fetchStockList(true));

@@ -1,12 +1,13 @@
 import { OK, BAD_REQUEST } from 'http-status-codes';
 import * as path from 'path';
-import { Controller, Get, Post, Delete, Put } from '@overnightjs/core';
+import { Controller, Get, Post, Delete, Put, Middleware } from '@overnightjs/core';
 import { Logger } from '@overnightjs/logger';
 import { Request, Response } from 'express';
 import connection from '../connection';
 import Stock from '../database/stock/entity';
 import { Like } from 'typeorm';
 import { scanDirectories, saveFile } from '../utils/fileSystemUtils';
+import authMiddleware from '../middleware/authMiddleware';
 
 const getImageRoot = () => path.join((global as any).appRoot, './static/images');
 
@@ -20,13 +21,14 @@ class StockController {
   private async getAllImages(req: Request, res: Response) {
     const imgDir = getImageRoot();
     const images = await scanDirectories(imgDir);
-
     return res.status(OK).json({
       error: {},
       response: images,
     });
   }
+
   @Post('image')
+  @Middleware(authMiddleware)
   private async uploadImage(req: Request, res: Response) {
     const { dir = '' } = req.fields;
     const { image } = req.files;
@@ -110,7 +112,9 @@ class StockController {
   }
 
   @Post()
+  @Middleware(authMiddleware)
   private addItem(req: Request, res: Response) {
+    Logger.Info('adding new item');
     try {
       connection.then(async connection => {
         const item: Stock = req.body;
@@ -130,6 +134,7 @@ class StockController {
   }
 
   @Put(':id')
+  @Middleware(authMiddleware)
   private updateItem(req: Request, res: Response) {
     try {
       connection.then(async connection => {
@@ -155,6 +160,7 @@ class StockController {
   }
 
   @Delete(':id')
+  @Middleware(authMiddleware)
   private removeItem(req: Request, res: Response) {
     try {
       connection.then(async connection => {
