@@ -47,6 +47,7 @@
     "copyEnv": "cp .env ./build",
     "docker:build": "npm run build:clean && npm run build:client && npm run build:server",
     "test": "react-scripts test",
+    "test:server": "react-scripts test --roots server/ --testMatch '**/*.test.ts' ",
     "eject": "react-scripts eject",
     "build:css": "postcss src/assets/tailwind.css -o src/assets/main.css",
     "watch:css": "postcss src/assets/tailwind.css -o src/assets/main.css"
