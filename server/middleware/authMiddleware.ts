@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { UNAUTHORIZED } from 'http-status-codes';
-import { validateToken, JwtToken } from '../utils/authUtil';
+import { validateToken } from '../utils/authUtil';
 import { sendHttpResponse } from '../utils/responseUtil';
 
 const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
@@ -16,7 +16,7 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
     });
   }
   const token = authHeader.split(' ')[1] || '';
-  const jwtToken: JwtToken | false = validateToken(token);
+  const jwtToken = validateToken(token);
 
   if (!jwtToken) {
     return sendHttpResponse({
