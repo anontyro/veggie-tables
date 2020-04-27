@@ -1,13 +1,26 @@
 import { OK, BAD_REQUEST } from 'http-status-codes';
+import * as path from 'path';
 import { Controller, Get, Post, Delete, Put } from '@overnightjs/core';
 import { Logger } from '@overnightjs/logger';
 import { Request, Response } from 'express';
 import connection from '../connection';
 import Stock from '../database/stock/entity';
 import { Like } from 'typeorm';
+import { scanDirectories } from '../utils/fileSystemUtils';
 
 @Controller('api/stock/')
 class StockController {
+  @Get('images')
+  private async getAllImages(req: Request, res: Response) {
+    const imgDir = path.join((global as any).appRoot, './static/images');
+    const images = await scanDirectories(imgDir);
+
+    return res.status(OK).json({
+      error: {},
+      response: images,
+    });
+  }
+
   @Get()
   private getAllItems(req: Request, res: Response) {
     try {
