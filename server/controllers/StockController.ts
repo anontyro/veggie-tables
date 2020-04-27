@@ -6,18 +6,46 @@ import { Request, Response } from 'express';
 import connection from '../connection';
 import Stock from '../database/stock/entity';
 import { Like } from 'typeorm';
-import { scanDirectories } from '../utils/fileSystemUtils';
+import { scanDirectories, saveFile } from '../utils/fileSystemUtils';
+
+const getImageRoot = () => path.join((global as any).appRoot, './static/images');
+
+interface ImageUploadFields {
+  dir: string;
+}
 
 @Controller('api/stock/')
 class StockController {
   @Get('images')
   private async getAllImages(req: Request, res: Response) {
-    const imgDir = path.join((global as any).appRoot, './static/images');
+    const imgDir = getImageRoot();
     const images = await scanDirectories(imgDir);
 
     return res.status(OK).json({
       error: {},
       response: images,
+    });
+  }
+  @Post('image')
+  private async uploadImage(req: Request, res: Response) {
+    const { dir = '' } = req.fields;
+    const { image } = req.files;
+    const saveDir = `${getImageRoot()}${dir}`;
+
+    const savedFile = await saveFile(image, saveDir);
+    if (!savedFile) {
+      return res.status(BAD_REQUEST).json({
+        error: {
+          message: 'error saving image',
+          code: BAD_REQUEST,
+        },
+        response: {},
+      });
+    }
+
+    return res.status(OK).json({
+      error: {},
+      response: savedFile,
     });
   }
 

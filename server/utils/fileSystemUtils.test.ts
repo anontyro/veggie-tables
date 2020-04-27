@@ -23,6 +23,21 @@ describe('scanDirectories', () => {
     ];
     expect(results).toStrictEqual(expected);
   });
+  test('scanDirectories will return the correct results from mocks/testDir for only supported extensions', async () => {
+    const dir = path.join(__dirname, '../mocks/testDir');
+    const results = await scanDirectories(dir);
+    const expected = [
+      {
+        name: 'carrots_01',
+        path: '/mocks/testDir/carrots_01.jpg',
+      },
+      {
+        name: 'default_placeholder',
+        path: '/mocks/testDir/default_placeholder.png',
+      },
+    ];
+    expect(results).toStrictEqual(expected);
+  });
   test('scanDirectories will recursively go over all nested directories', async () => {
     const dir = path.join(__dirname, '../mocks/testNestDir');
     const results = await scanDirectories(dir);
