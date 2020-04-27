@@ -8,6 +8,7 @@ import Stock from '../database/stock/entity';
 import { Like } from 'typeorm';
 import { scanDirectories, saveFile } from '../utils/fileSystemUtils';
 import authMiddleware from '../middleware/authMiddleware';
+import formidableMiddleware from 'express-formidable';
 
 const getImageRoot = () => path.join((global as any).appRoot, './static/images');
 
@@ -28,7 +29,7 @@ class StockController {
   }
 
   @Post('image')
-  @Middleware(authMiddleware)
+  @Middleware([formidableMiddleware(), authMiddleware])
   private async uploadImage(req: Request, res: Response) {
     const { dir = '' } = req.fields;
     const { image } = req.files;

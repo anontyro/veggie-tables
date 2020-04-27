@@ -2,7 +2,6 @@ import * as path from 'path';
 import * as express from 'express';
 import 'reflect-metadata';
 import * as bodyParser from 'body-parser';
-import formidableMiddleware from 'express-formidable';
 import * as controllers from './controllers';
 import { Server } from '@overnightjs/core';
 import { Logger } from '@overnightjs/logger';
@@ -22,7 +21,6 @@ class MainServer extends Server {
     const stockController = new StockController();
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: true }));
-    this.app.use(formidableMiddleware());
     super.addControllers([userController, stockController]);
     this.app.use('/static', express.static(this.staticPath));
     if (this.isProduction) {
