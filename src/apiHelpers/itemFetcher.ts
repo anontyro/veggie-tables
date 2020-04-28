@@ -4,6 +4,10 @@ export const defaultHeaders = {
   'Content-Type': 'application/json',
 };
 
+export const COMMON_HEADERS = {
+  FORM_DATA: { 'Content-Type': 'multipart/form-data' },
+};
+
 export interface ItemFetcher {
   url: string;
   method?: HTTP_VERB;

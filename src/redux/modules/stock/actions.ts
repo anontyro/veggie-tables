@@ -5,12 +5,16 @@ import {
   FETCHED_ITEM_DETAILS,
   UPDATING_STOCK_ITEM,
   UPDATED_STOCK_ITEM,
+  ADDING_STOCK_IMG,
+  FETCHING_STOCK_IMG_LIST,
+  FETCHED_STOCK_IMG_LIST,
+  ADDED_STOCK_IMG,
 } from './consts';
-import { StockItem } from '../../../../types/Stock';
+import { StockItem, StockImage, StockImageForm } from '../../../../types/Stock';
 import { ThunkDispatch } from 'redux-thunk';
 import { RootState } from '../..';
 import { BACKEND_ROUTES } from '../../../enum/routes';
-import itemFetcher from '../../../apiHelpers/itemFetcher';
+import itemFetcher, { COMMON_HEADERS } from '../../../apiHelpers/itemFetcher';
 import HTTP_VERB from '../../../enum/http';
 import { getBearerHeader } from '../user/reducer';
 import { ItemFetcher } from '../../../apiHelpers/itemFetcher';
@@ -33,6 +37,24 @@ interface FetchedItemDetails {
   payload: StockItem;
 }
 
+interface FetchingStockImgList {
+  type: FETCHING_STOCK_IMG_LIST;
+}
+
+interface FetchedStockImgList {
+  type: FETCHED_STOCK_IMG_LIST;
+  payload: StockImage[];
+}
+
+interface AddingStockImg {
+  type: ADDING_STOCK_IMG;
+}
+
+interface AddedStockImg {
+  type: ADDED_STOCK_IMG;
+  payload: StockImage;
+}
+
 interface UpdatingStockItem {
   type: UPDATING_STOCK_ITEM;
   payload: HTTP_VERB;
@@ -48,6 +70,10 @@ export type StockActions =
   | FetchedStockList
   | FetchingItemDetails
   | FetchedItemDetails
+  | FetchingStockImgList
+  | FetchedStockImgList
+  | AddingStockImg
+  | AddedStockImg
   | UpdatingStockItem
   | UpdatedStockItem;
 
@@ -67,6 +93,24 @@ const fetchingItemDetails = (): FetchingItemDetails => ({
 const fetchedItemDetails = (stockItem: StockItem): FetchedItemDetails => ({
   type: FETCHED_ITEM_DETAILS,
   payload: stockItem,
+});
+
+const fetchingStockImgList = (): FetchingStockImgList => ({
+  type: FETCHING_STOCK_IMG_LIST,
+});
+
+const fetchedStockImgList = (stockImgList: StockImage[]): FetchedStockImgList => ({
+  type: FETCHED_STOCK_IMG_LIST,
+  payload: stockImgList,
+});
+
+const addingStockImg = (): AddingStockImg => ({
+  type: ADDING_STOCK_IMG,
+});
+
+const addedStockImg = (stockImg: StockImage): AddedStockImg => ({
+  type: ADDED_STOCK_IMG,
+  payload: stockImg,
 });
 
 const updatingStockItem = (httpVerb: HTTP_VERB): UpdatingStockItem => ({
@@ -166,5 +210,55 @@ export const updateItem = (
     }
 
     dispatch(updatedStockItem(item));
+  };
+};
+
+export const fetchStockImgList = (getFresh = false) => {
+  return async (dispatch: ThunkDispatch<unknown, undefined, StockActions>, getState) => {
+    const {
+      stock: { stockImageList },
+    }: RootState = getState();
+
+    if (stockImageList.length > 0 && !getFresh) {
+      return;
+    }
+
+    dispatch(fetchingStockImgList());
+
+    try {
+      const { response }: { response: StockImage[] } = await itemFetcher({
+        url: BACKEND_ROUTES.STOCK_IMG_LIST,
+      });
+
+      dispatch(fetchedStockImgList(response));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+};
+
+export const addStockImg = (imageForm: StockImageForm) => {
+  return async (dispatch: ThunkDispatch<unknown, undefined, StockActions>, getState) => {
+    dispatch(addingStockImg());
+
+    const formData = new FormData();
+
+    formData.append('image', imageForm.image);
+    formData.append('dir', imageForm.dir);
+
+    try {
+      const { response }: { response: StockImage } = await itemFetcher({
+        url: BACKEND_ROUTES.STOCK_IMG,
+        extraHeaders: {
+          ...COMMON_HEADERS.FORM_DATA,
+        },
+        method: HTTP_VERB.POST,
+        body: formData,
+      });
+      dispatch(fetchStockImgList(true));
+      dispatch(addedStockImg(response));
+    } catch (err) {
+      console.error(err);
+    }
   };
 };

@@ -1,5 +1,7 @@
 export const BACKEND_ROUTES = {
   STOCK_ROOT: '/api/stock',
+  STOCK_IMG: '/api/stock/image',
+  STOCK_IMG_LIST: '/api/stock/images',
 };
 
 export const AUTH_ROUTES = {

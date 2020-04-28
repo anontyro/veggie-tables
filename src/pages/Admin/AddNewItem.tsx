@@ -65,6 +65,7 @@ const AddNewItem: React.FC = () => {
   const headerText = id ? `Update ${currentItem?.name}` : `Add New Item `;
 
   useEffect(() => {
+    dispatch(stockActions.fetchStockImgList());
     if (id) {
       dispatch(stockActions.fetchItemDetail(+id));
     }
@@ -146,6 +147,7 @@ const AddNewItem: React.FC = () => {
             />
             {id ? (
               <button
+                type="submit"
                 className={`${defaultButton}`}
                 onClick={(event: React.MouseEvent) => {
                   event.preventDefault();
@@ -159,6 +161,7 @@ const AddNewItem: React.FC = () => {
               </button>
             ) : (
               <button
+                type="submit"
                 className={`${defaultButton}`}
                 disabled={isUpdating}
                 onClick={(event: React.MouseEvent) => {

@@ -1,4 +1,4 @@
-import { StockItem } from '../../../../types/Stock';
+import { StockItem, StockImage } from '../../../../types/Stock';
 import { StockActions } from './actions';
 import {
   FETCHING_STOCK_LIST,
@@ -7,11 +7,16 @@ import {
   FETCHED_ITEM_DETAILS,
   UPDATING_STOCK_ITEM,
   UPDATED_STOCK_ITEM,
+  FETCHING_STOCK_IMG_LIST,
+  FETCHED_STOCK_IMG_LIST,
+  ADDING_STOCK_IMG,
+  ADDED_STOCK_IMG,
 } from './consts';
 import HTTP_VERB from '../../../enum/http';
 
 export interface StockState {
   stockList: StockItem[];
+  stockImageList: StockImage[];
   currentItem: Partial<StockItem>;
   update: {
     httpVerb: HTTP_VERB | null;
@@ -22,6 +27,7 @@ export interface StockState {
 
 export const INITIAL_STATE: StockState = {
   stockList: [],
+  stockImageList: [],
   currentItem: null,
   update: {
     httpVerb: null,
@@ -52,6 +58,27 @@ const stock = (state: StockState = INITIAL_STATE, action: StockActions): StockSt
       return {
         ...state,
         currentItem: action.payload,
+        isBusy: false,
+      };
+    case FETCHING_STOCK_IMG_LIST:
+      return {
+        ...state,
+        isBusy: true,
+      };
+    case FETCHED_STOCK_IMG_LIST:
+      return {
+        ...state,
+        stockImageList: action.payload,
+        isBusy: false,
+      };
+    case ADDING_STOCK_IMG:
+      return {
+        ...state,
+        isBusy: true,
+      };
+    case ADDED_STOCK_IMG:
+      return {
+        ...state,
         isBusy: false,
       };
     case UPDATING_STOCK_ITEM:

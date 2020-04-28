@@ -7,3 +7,13 @@ export interface StockItem {
   stockLevel: number;
   description?: string;
 }
+
+export interface StockImage {
+  name: string;
+  path: string;
+}
+
+export interface StockImageForm {
+  image: File;
+  dir?: string;
+}

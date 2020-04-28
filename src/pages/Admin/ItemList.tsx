@@ -30,6 +30,7 @@ const ItemList: React.FC = () => {
 
   useEffect(() => {
     dispatch(stockActions.fetchStockList());
+    dispatch(stockActions.fetchStockImgList());
   }, []);
 
   const [removeId, setRemoveId] = useState(-1);
@@ -41,15 +42,6 @@ const ItemList: React.FC = () => {
           dispatch(stockActions.fetchStockList(true));
         })
       );
-      // itemFetcher({
-      //   url: `${BACKEND_ROUTES.STOCK_ROOT}/${removeId}`,
-      //   method: HTTP_VERB.DELETE,
-      //   extraHeaders: authHeader,
-      //   onFetched: () => {
-      //     setRemoveId(-1);
-      //     dispatch(stockActions.fetchStockList(true));
-      //   },
-      // });
     }
   }, [removeId]);
 
