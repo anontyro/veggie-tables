@@ -7,6 +7,7 @@ import { StockState } from '../../redux/modules/stock/reducer';
 import { RootState } from '../../redux';
 import * as stockActions from '../../redux/modules/stock/actions';
 import AddToCart from '../../components/Buttons/AddToCart';
+import { StockItem } from '../../../types/Stock';
 
 const Item: React.FC = () => {
   const { id } = useParams();
@@ -31,7 +32,7 @@ const Item: React.FC = () => {
                 alt={currentItem.name}
                 className="object-fill w-32 h-32 flex rounded"
               />
-              <AddToCart item={currentItem} styles="w-full" />
+              <AddToCart item={currentItem as StockItem} styles="w-full" />
             </div>
             <div className="m-6 flex-grow">
               <p>{currentItem.description}</p>

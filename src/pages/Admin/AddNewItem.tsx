@@ -4,14 +4,12 @@ import { MainHeader } from '../../components/Headers/MainHeader';
 import { StockItem } from '../../../types/Stock';
 import { defaultButton } from '../../components/Buttons/btnStyles';
 import { useHistory, useLocation } from 'react-router-dom';
-import { BACKEND_ROUTES, FRONTEND_ROUTES } from '../../enum/routes';
+import { FRONTEND_ROUTES } from '../../enum/routes';
 import { useDispatch, useSelector } from 'react-redux';
 import * as stockActions from '../../redux/modules/stock/actions';
 import { RootState } from '../../redux';
 import { StockState } from '../../redux/modules/stock/reducer';
 import HTTP_VERB from '../../enum/http';
-import itemFetcher from '../../apiHelpers/itemFetcher';
-import { getBearerHeader } from '../../redux/modules/user/reducer';
 
 interface StandardInputProps {
   value: any;
@@ -54,11 +52,13 @@ const AddNewItem: React.FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const stockState: StockState = useSelector((state: RootState) => state.stock);
-  const authHeader = useSelector((state: RootState) => getBearerHeader(state.user));
 
   const query = useQuery();
   const id = parseInt(query.get('id')) || null;
-  const { currentItem } = stockState;
+  const {
+    currentItem,
+    update: { isUpdating },
+  } = stockState;
 
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [nextItem, setNextItem] = useState<Partial<StockItem>>(defaultItem);
@@ -88,21 +88,9 @@ const AddNewItem: React.FC = () => {
     };
 
     if (nextItem.name.length > 0 && isSubmitted && !id) {
-      itemFetcher({
-        url: BACKEND_ROUTES.STOCK_ROOT,
-        method: HTTP_VERB.POST,
-        extraHeaders: authHeader,
-        body: nextItem,
-        onFetched: onFetched,
-      });
+      dispatch(stockActions.updateItem(nextItem, HTTP_VERB.POST, onFetched));
     } else if (nextItem.name.length > 0 && isSubmitted && id) {
-      itemFetcher({
-        url: `${BACKEND_ROUTES.STOCK_ROOT}/${currentItem.id}`,
-        method: HTTP_VERB.PUT,
-        extraHeaders: authHeader,
-        body: nextItem,
-        onFetched: onFetched,
-      });
+      dispatch(stockActions.updateItem(nextItem, HTTP_VERB.PUT, onFetched));
     } else {
       setIsSubmitted(false);
     }
@@ -172,6 +160,7 @@ const AddNewItem: React.FC = () => {
             ) : (
               <button
                 className={`${defaultButton}`}
+                disabled={isUpdating}
                 onClick={(event: React.MouseEvent) => {
                   event.preventDefault();
                   console.log(nextItem);

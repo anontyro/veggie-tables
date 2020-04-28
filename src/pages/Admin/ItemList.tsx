@@ -6,12 +6,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { StockState } from '../../redux/modules/stock/reducer';
 import { RootState } from '../../redux';
 import * as stockActions from '../../redux/modules/stock/actions';
-import { BACKEND_ROUTES, FRONTEND_ROUTES } from '../../enum/routes';
+import { FRONTEND_ROUTES } from '../../enum/routes';
 import { removeButton } from '../../components/Buttons/btnStyles';
 import { useHistory } from 'react-router-dom';
-import itemFetcher from '../../apiHelpers/itemFetcher';
 import HTTP_VERB from '../../enum/http';
-import { getBearerHeader } from '../../redux/modules/user/reducer';
 
 const Desc = styled.p`
   display: -webkit-box;
@@ -24,8 +22,11 @@ const ItemList: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const stockState: StockState = useSelector((state: RootState) => state.stock);
-  const authHeader = useSelector((state: RootState) => getBearerHeader(state.user));
-  const { stockList, isBusy } = stockState;
+  // const authHeader = useSelector((state: RootState) => getBearerHeader(state.user));
+  const {
+    stockList,
+    update: { isUpdating },
+  } = stockState;
 
   useEffect(() => {
     dispatch(stockActions.fetchStockList());
@@ -34,15 +35,21 @@ const ItemList: React.FC = () => {
   const [removeId, setRemoveId] = useState(-1);
   useEffect(() => {
     if (removeId > -1) {
-      itemFetcher({
-        url: `${BACKEND_ROUTES.STOCK_ROOT}/${removeId}`,
-        method: HTTP_VERB.DELETE,
-        extraHeaders: authHeader,
-        onFetched: () => {
+      dispatch(
+        stockActions.updateItem({ id: removeId }, HTTP_VERB.DELETE, () => {
           setRemoveId(-1);
           dispatch(stockActions.fetchStockList(true));
-        },
-      });
+        })
+      );
+      // itemFetcher({
+      //   url: `${BACKEND_ROUTES.STOCK_ROOT}/${removeId}`,
+      //   method: HTTP_VERB.DELETE,
+      //   extraHeaders: authHeader,
+      //   onFetched: () => {
+      //     setRemoveId(-1);
+      //     dispatch(stockActions.fetchStockList(true));
+      //   },
+      // });
     }
   }, [removeId]);
 
@@ -68,6 +75,7 @@ const ItemList: React.FC = () => {
               </div>
               <div className="flex mx-6 text-right justify-end">
                 <button
+                  disabled={isUpdating}
                   onClick={() =>
                     history.push(`${FRONTEND_ROUTES.ADMIN.ADD_ITEM}?id=${stockItem.id}`)
                   }
@@ -75,7 +83,11 @@ const ItemList: React.FC = () => {
                 >
                   Edit
                 </button>
-                <button onClick={() => setRemoveId(stockItem.id)} className={removeButton}>
+                <button
+                  disabled={isUpdating}
+                  onClick={() => setRemoveId(stockItem.id)}
+                  className={removeButton}
+                >
                   Delete
                 </button>
               </div>

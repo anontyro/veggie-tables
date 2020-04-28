@@ -17,7 +17,7 @@ export interface JwtToken {
 
 const LOCAL_SECRET = '123efg34wsdfv43rwfcse3r4t5htrbfvcf3r43qwfv';
 const SECRET = process.env.JWT_SECRET || LOCAL_SECRET;
-const TOKEN_EXPIRY_SECONDS = 86400;
+const TOKEN_EXPIRY_SECONDS = process.env.TOKEN_EXPIRY || 86400;
 
 export const createNewToken = (user: IUser, expires?: number): string => {
   const token = jwt.sign({ id: user.id, email: user.email, issued: Date.now() }, SECRET, {

@@ -4,7 +4,7 @@ export const defaultHeaders = {
   'Content-Type': 'application/json',
 };
 
-interface ItemFetcher {
+export interface ItemFetcher {
   url: string;
   method?: HTTP_VERB;
   body?: {};
