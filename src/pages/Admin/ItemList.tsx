@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import AdminLayout from '../_layout/AdminLayout';
 import { MainHeader } from '../../components/Headers/MainHeader';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,13 +9,7 @@ import { FRONTEND_ROUTES } from '../../enum/routes';
 import { removeButton } from '../../components/Buttons/btnStyles';
 import { useHistory } from 'react-router-dom';
 import HTTP_VERB from '../../enum/http';
-
-const Desc = styled.p`
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-`;
+import StockItemCard from '../../components/Cards/StockItemCard';
 
 const ItemList: React.FC = () => {
   const dispatch = useDispatch();
@@ -51,21 +44,8 @@ const ItemList: React.FC = () => {
         <MainHeader text="Item List" />
         <div className="flex flex-col">
           {stockList.map(stockItem => (
-            <div key={stockItem.id} className="flex flex-col bg-gray-300 rounded m-4 h-48">
-              <div className=" flex flex-row p-4 pb-0">
-                <img
-                  src={`${stockItem?.imageUrl}`}
-                  alt={stockItem.name}
-                  className="object-fill w-32 h-32 flex rounded"
-                />
-                <div className="flex flex-col flex-grow mx-6">
-                  <h1>{stockItem.name}</h1>
-                  <p>{`${stockItem.unitPrice} ${stockItem.currency}`}</p>
-                  <p>{`Stock Level: ${stockItem.stockLevel}`}</p>
-                  <Desc>{stockItem.description}</Desc>
-                </div>
-              </div>
-              <div className="flex mx-6 text-right justify-end">
+            <StockItemCard key={stockItem.id} stockItem={stockItem}>
+              <React.Fragment>
                 <button
                   disabled={isUpdating}
                   onClick={() =>
@@ -82,8 +62,8 @@ const ItemList: React.FC = () => {
                 >
                   Delete
                 </button>
-              </div>
-            </div>
+              </React.Fragment>
+            </StockItemCard>
           ))}
         </div>
       </React.Fragment>
