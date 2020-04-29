@@ -32,7 +32,7 @@ const ModalBase: React.FC<Props> = ({
   onConfirm,
 }) => {
   const modalOnRequestClose = isLoading ? () => {} : onRequestClose;
-  const onClickConfirm = onClickEvent(onConfirm, onRequestClose);
+  const onClickConfirm = onClickEvent(onConfirm);
   const onClickCancel = onClickEvent(onCancel, onRequestClose);
 
   return (
@@ -70,7 +70,7 @@ const ModalBase: React.FC<Props> = ({
         {isLoading ? (
           <DefaultLoader />
         ) : (
-          <div className={defaultButtonLayout}>
+          <div className={`${defaultButtonLayout} space-x-4`}>
             {onConfirm && (
               <button className={defaultButton} onClick={onClickConfirm}>
                 Confirm

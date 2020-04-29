@@ -1,81 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import AdminLayout from '../_layout/AdminLayout';
 import { MainHeader } from '../../components/Headers/MainHeader';
-import { StockItem, StockImage } from '../../../types/Stock';
+import { StockItem } from '../../../types/Stock';
 import { defaultButton } from '../../components/Buttons/btnStyles';
 import { useHistory, useLocation } from 'react-router-dom';
 import { FRONTEND_ROUTES } from '../../enum/routes';
 import { useDispatch, useSelector } from 'react-redux';
 import * as stockActions from '../../redux/modules/stock/actions';
+import * as modalActions from '../../redux/modules/modal/actions';
 import { RootState } from '../../redux';
 import { StockState } from '../../redux/modules/stock/reducer';
 import HTTP_VERB from '../../enum/http';
 import StockItemCard from '../../components/Cards/StockItemCard';
-
-const convertKebabCase = (str: string) => str.replace(/\s/g, '-');
-
-interface BaseInputProps {
-  value: any;
-  label: string;
-  onChange: (event: any) => any;
-  type?: string;
-  isDisabled?: boolean;
-}
-
-interface StandardInputProps extends BaseInputProps {
-  onChange: (event: React.FormEvent<HTMLInputElement>) => void;
-}
-
-interface DropDownInputProps extends BaseInputProps {
-  dropDownItems: StockImage[];
-  onChange: (event: React.FormEvent<HTMLSelectElement>) => void;
-}
-
-const StandardInput: React.FC<StandardInputProps> = ({
-  value,
-  label,
-  onChange,
-  type = 'text',
-  isDisabled = false,
-}) => (
-  <div className="mb-4">
-    <label className="block text-gray-700 text-sm font-bold mb-2">{label}</label>
-    <input
-      disabled={isDisabled}
-      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-      type={type}
-      value={value}
-      onChange={onChange}
-    />
-  </div>
-);
-
-const DropDownInput: React.FC<DropDownInputProps> = ({
-  dropDownItems,
-  value,
-  label,
-  onChange,
-  isDisabled = false,
-}) => (
-  <div className="mb-4">
-    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor={convertKebabCase(label)}>
-      {label}
-    </label>
-    <select
-      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-      name={convertKebabCase(label)}
-      onChange={onChange}
-      disabled={isDisabled}
-      value={value}
-    >
-      {dropDownItems.map((item: StockImage) => (
-        <option key={item.path} value={item.path}>
-          {item.name}
-        </option>
-      ))}
-    </select>
-  </div>
-);
+import { StandardInput, DropDownInput } from '../../components/Form/Inputs';
+import { modalType as imageUploadModalType } from '../../components/Modals/ImageUpload';
 
 const defaultItem: Partial<StockItem> = {
   name: '',
@@ -197,36 +135,51 @@ const AddNewItem: React.FC = () => {
                   });
                 }}
               />
-              {id ? (
+              <div className="space-x-4">
+                {id ? (
+                  <button
+                    type="submit"
+                    className={`${defaultButton}`}
+                    onClick={(event: React.MouseEvent) => {
+                      event.preventDefault();
+                      console.log(nextItem);
+                      if (nextItem.name.length > 0) {
+                        setIsSubmitted(true);
+                      }
+                    }}
+                  >
+                    Update Item
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    className={`${defaultButton}`}
+                    disabled={isUpdating}
+                    onClick={(event: React.MouseEvent) => {
+                      event.preventDefault();
+                      console.log(nextItem);
+                      if (nextItem.name.length > 0) {
+                        setIsSubmitted(true);
+                      }
+                    }}
+                  >
+                    Add Item
+                  </button>
+                )}
                 <button
-                  type="submit"
-                  className={`${defaultButton}`}
+                  type="button"
                   onClick={(event: React.MouseEvent) => {
                     event.preventDefault();
-                    console.log(nextItem);
-                    if (nextItem.name.length > 0) {
-                      setIsSubmitted(true);
-                    }
+                    dispatch(
+                      modalActions.showModal({
+                        modalType: imageUploadModalType,
+                      })
+                    );
                   }}
                 >
-                  Update Item
+                  Upload Image
                 </button>
-              ) : (
-                <button
-                  type="submit"
-                  className={`${defaultButton}`}
-                  disabled={isUpdating}
-                  onClick={(event: React.MouseEvent) => {
-                    event.preventDefault();
-                    console.log(nextItem);
-                    if (nextItem.name.length > 0) {
-                      setIsSubmitted(true);
-                    }
-                  }}
-                >
-                  Add Item
-                </button>
-              )}
+              </div>
             </form>
           </div>
 

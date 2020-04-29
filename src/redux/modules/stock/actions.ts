@@ -18,6 +18,7 @@ import itemFetcher, { COMMON_HEADERS } from '../../../apiHelpers/itemFetcher';
 import HTTP_VERB from '../../../enum/http';
 import { getBearerHeader } from '../user/reducer';
 import { ItemFetcher } from '../../../apiHelpers/itemFetcher';
+import { EMPTY_FUNCTION } from '../../../components/Base/defaults';
 
 interface FetchingStockList {
   type: FETCHING_STOCK_LIST;
@@ -237,8 +238,11 @@ export const fetchStockImgList = (getFresh = false) => {
   };
 };
 
-export const addStockImg = (imageForm: StockImageForm) => {
+export const addStockImg = (imageForm: StockImageForm, onComplete: () => void = EMPTY_FUNCTION) => {
   return async (dispatch: ThunkDispatch<unknown, undefined, StockActions>, getState) => {
+    const state: RootState = getState();
+    const authHeader = getBearerHeader(state.user);
+
     dispatch(addingStockImg());
 
     const formData = new FormData();
@@ -246,17 +250,19 @@ export const addStockImg = (imageForm: StockImageForm) => {
     formData.append('image', imageForm.image);
     formData.append('dir', imageForm.dir);
 
+    const options = {
+      method: HTTP_VERB.POST,
+      headers: {
+        ...authHeader,
+      },
+      body: formData,
+    };
+
     try {
-      const { response }: { response: StockImage } = await itemFetcher({
-        url: BACKEND_ROUTES.STOCK_IMG,
-        extraHeaders: {
-          ...COMMON_HEADERS.FORM_DATA,
-        },
-        method: HTTP_VERB.POST,
-        body: formData,
-      });
+      const results: any = await fetch(BACKEND_ROUTES.STOCK_IMG, options);
       dispatch(fetchStockImgList(true));
-      dispatch(addedStockImg(response));
+      dispatch(addedStockImg(results.response));
+      onComplete();
     } catch (err) {
       console.error(err);
     }

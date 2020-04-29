@@ -11,6 +11,7 @@ module.exports = {
     },
     colors: {
       transparent: 'transparent',
+      current: 'currentColor',
 
       black: '#000',
       white: '#fff',
@@ -205,6 +206,8 @@ module.exports = {
       move: 'move',
       'not-allowed': 'not-allowed',
     },
+    divideColor: theme => theme('borderColor'),
+    divideWidth: theme => theme('borderWidth'),
     fill: {
       current: 'currentColor',
     },
@@ -373,6 +376,10 @@ module.exports = {
     },
     padding: theme => theme('spacing'),
     placeholderColor: theme => theme('colors'),
+    space: (theme, { negative }) => ({
+      ...theme('spacing'),
+      ...negative(theme('spacing')),
+    }),
     stroke: {
       current: 'currentColor',
     },
@@ -598,6 +605,16 @@ module.exports = {
       '700': '700ms',
       '1000': '1000ms',
     },
+    transitionDelay: {
+      '75': '75ms',
+      '100': '100ms',
+      '150': '150ms',
+      '200': '200ms',
+      '300': '300ms',
+      '500': '500ms',
+      '700': '700ms',
+      '1000': '1000ms',
+    },
   },
   variants: {
     accessibility: ['responsive', 'focus'],
@@ -619,6 +636,8 @@ module.exports = {
     boxSizing: ['responsive'],
     cursor: ['responsive'],
     display: ['responsive'],
+    divideColor: ['responsive'],
+    divideWidth: ['responsive'],
     fill: ['responsive'],
     flex: ['responsive'],
     flexDirection: ['responsive'],
@@ -655,6 +674,7 @@ module.exports = {
     pointerEvents: ['responsive'],
     position: ['responsive'],
     resize: ['responsive'],
+    space: ['responsive'],
     stroke: ['responsive'],
     strokeWidth: ['responsive'],
     tableLayout: ['responsive'],
@@ -688,6 +708,7 @@ module.exports = {
     transitionProperty: ['responsive'],
     transitionTimingFunction: ['responsive'],
     transitionDuration: ['responsive'],
+    transitionDelay: ['responsive'],
   },
   corePlugins: {},
   plugins: [],
