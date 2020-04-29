@@ -11,6 +11,9 @@ import {
 } from './components/LayoutStyles';
 import NavLink, { externalLink } from '../../components/Buttons/NavLink';
 import { FRONTEND_ROUTES } from '../../enum/routes';
+import { RootState } from '../../redux';
+import { useSelector } from 'react-redux';
+import MainModal from '../../components/Modals';
 
 interface Props {
   children: React.ReactChild;
@@ -19,6 +22,7 @@ interface Props {
 
 const MainLayout: React.FC<Props> = ({ children, isBusy }) => {
   const { pathname } = useLocation();
+  const { modalType } = useSelector((state: RootState) => state.modal);
 
   return (
     <React.Fragment>
@@ -49,6 +53,7 @@ const MainLayout: React.FC<Props> = ({ children, isBusy }) => {
           </ExternalLink>
         </FooterContainer>
       </MainFooter>
+      <MainModal activeModal={modalType} />
     </React.Fragment>
   );
 };

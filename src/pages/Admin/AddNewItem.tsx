@@ -231,7 +231,7 @@ const AddNewItem: React.FC = () => {
           </div>
 
           <div id="item-preview" className="flex-grow xl:max-w-xl m-auto sm:w-3/6">
-            <h3>Preview</h3>
+            <h3 className="m-4">Preview</h3>
             <StockItemCard stockItem={nextItem} />
           </div>
         </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { StockItem } from '../../../../types/Stock';
+import { defaultButtonLayout } from '../../Buttons/btnStyles';
 
 const Desc = styled.p`
   display: -webkit-box;
@@ -29,7 +30,7 @@ const StockItemCard: React.FC<StockItemCardProps> = ({ stockItem, children }) =>
         <Desc>{stockItem.description || ''}</Desc>
       </div>
     </div>
-    {children && <div className="flex mx-6 text-right justify-end">{children}</div>}
+    {children && <div className={`${defaultButtonLayout} mx-4`}>{children}</div>}
   </div>
 );
 

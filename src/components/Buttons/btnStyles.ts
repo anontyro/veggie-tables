@@ -3,3 +3,5 @@ export const defaultButton =
 
 export const removeButton =
   'text-purple-600 hover:text-purple-900 border border-purple-600 hover:border-purple-900 rounded py-1 px-4 disabled:opacity-50 disabled:cursor-not-allowed';
+
+export const defaultButtonLayout = 'modal-controls flex text-right justify-end';
