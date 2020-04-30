@@ -5,7 +5,10 @@ import * as stockActions from '../../redux/modules/stock/actions';
 import MainLayout from '../_layout/MainLayout';
 import { StockState } from '../../redux/modules/stock/reducer';
 import { MainHeader } from '../../components/Headers/MainHeader';
-import StockListItem from '../../components/Stock/StockListItem';
+import CompactStockItemCard, {
+  defaultStyle as stockCardStyle,
+} from '../../components/Cards/CompactStockItemCard';
+import AddToCart from '../../components/Buttons/AddToCart';
 
 const HomePage: React.FC = () => {
   const dispatch = useDispatch();
@@ -22,7 +25,12 @@ const HomePage: React.FC = () => {
         <MainHeader text="Home" />
         <div className="flex flex-row flex-wrap">
           {stockList.map(item => (
-            <StockListItem key={item.id} item={item} />
+            <CompactStockItemCard key={item.id} item={item} style={`${stockCardStyle} h-56`}>
+              <React.Fragment>
+                <span className="text-center text-lg">{item.name.toUpperCase()}</span>
+                <AddToCart item={item} />
+              </React.Fragment>
+            </CompactStockItemCard>
           ))}
         </div>
       </React.Fragment>

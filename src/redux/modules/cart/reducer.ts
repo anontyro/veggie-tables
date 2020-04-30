@@ -2,7 +2,7 @@ import { StockItem } from '../../../../types/Stock';
 import { CartActions } from './actions';
 import { ADD_ITEM_TO_CART, REMOVE_ITEM_FROM_CART, CLEAR_CART } from './consts';
 
-interface CartItem {
+export interface CartItem {
   item: StockItem;
   quantity: number;
 }
@@ -77,3 +77,13 @@ const addToCart = (cart: CartItem[], item: StockItem): CartItem[] => {
 };
 
 export default userCart;
+
+export const cartSubTotal = (state: CartState): number => {
+  let subTotal = 0;
+  state.cart.forEach((item: CartItem) => {
+    const cost = item.quantity * item.item.unitPrice;
+    subTotal += cost;
+  });
+
+  return subTotal;
+};
