@@ -16,6 +16,10 @@ export interface ItemFetcher {
   onFetched?: () => void;
 }
 
+/**
+ * itemFetcher only supports JSON objects in the body so form data can't be sent this way
+ * @param param0
+ */
 const itemFetcher = async ({
   url,
   method = HTTP_VERB.GET,

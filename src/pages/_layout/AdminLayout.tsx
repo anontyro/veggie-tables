@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import {
   MainFooter,
@@ -14,6 +14,7 @@ import { FRONTEND_ROUTES } from '../../enum/routes';
 import MainModal from '../../components/Modals';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux';
+import AdminSideMenu from './components/SideMenu/AdminSideMenu';
 
 interface Props {
   children: React.ReactChild;
@@ -23,6 +24,7 @@ interface Props {
 const AdminLayout: React.FC<Props> = ({ children, isBusy }) => {
   const { pathname } = useLocation();
   const { modalType } = useSelector((state: RootState) => state.modal);
+  const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
 
   return (
     <React.Fragment>
@@ -43,6 +45,13 @@ const AdminLayout: React.FC<Props> = ({ children, isBusy }) => {
           >
             Add Item
           </NavLink>
+          <button
+            onClick={() => {
+              setIsSideMenuOpen(!isSideMenuOpen);
+            }}
+          >
+            Open
+          </button>
         </NavMenu>
       </MainNav>
       <ContentContainer className="content">
@@ -57,6 +66,7 @@ const AdminLayout: React.FC<Props> = ({ children, isBusy }) => {
         </FooterContainer>
       </MainFooter>
       <MainModal activeModal={modalType} />
+      <AdminSideMenu isOpen={isSideMenuOpen} setIsOpen={setIsSideMenuOpen} />
     </React.Fragment>
   );
 };
