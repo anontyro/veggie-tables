@@ -3,6 +3,7 @@ import Modal from 'react-modal';
 import { defaultButton, defaultButtonLayout, cancelButton } from '../Buttons/btnStyles';
 import DefaultLoader from '../Loaders/DefaultLoader';
 import { EMPTY_FUNCTION } from '../Base/defaults';
+import WarningMessage, { WarningMsgProps } from '../Alerts/WarningMessage';
 
 const onClickEvent = (...funcArgs: Function[]) => (event: React.MouseEvent) => {
   event.preventDefault();
@@ -14,6 +15,7 @@ const onClickEvent = (...funcArgs: Function[]) => (event: React.MouseEvent) => {
 
 interface Props {
   isOpen: boolean;
+  warnMsg: WarningMsgProps;
   children: React.ReactChild;
   headerText?: string;
   onRequestClose: () => any;
@@ -29,6 +31,9 @@ const ModalBase: React.FC<Props> = ({
   headerText = 'Veggie Tables',
   onCancel = EMPTY_FUNCTION,
   isLoading = false,
+  warnMsg = {
+    isShown: false,
+  },
   onConfirm,
 }) => {
   const modalOnRequestClose = isLoading ? EMPTY_FUNCTION : onRequestClose;
@@ -65,6 +70,7 @@ const ModalBase: React.FC<Props> = ({
       }}
     >
       <div className="modal-header p-2 text-center border-b bg-indigo-100">{headerText}</div>
+      <WarningMessage {...warnMsg} />
       <div className="modal-body m-4">
         <div className="modal-text my-4">{children}</div>
         {isLoading ? (

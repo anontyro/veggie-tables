@@ -6,6 +6,7 @@ import * as modalActions from '../../../redux/modules/modal/actions';
 import * as stockActions from '../../../redux/modules/stock/actions';
 import { UploadInput } from '../../Form/Inputs';
 import { StockImageForm } from '../../../../types/Stock';
+import { WarningMsgProps } from '../../Alerts/WarningMessage';
 
 export const modalType = 'IMAGE_UPLOAD_MODAL';
 const HEADER_TEXT = 'Stock Image Upload';
@@ -40,6 +41,7 @@ interface Props {}
 
 const ImageUpload: React.FC<Props> = ({}) => {
   const dispatch = useDispatch();
+  const [showWarnMsg, setShowWarnMsg] = useState(false);
   const {
     modal,
     stock: { isBusy },
@@ -49,12 +51,19 @@ const ImageUpload: React.FC<Props> = ({}) => {
     dir: '',
   });
 
+  const warnMsg: WarningMsgProps = {
+    isShown: showWarnMsg,
+    header: 'Oops Did You Forget Something?',
+    text: 'Please select an image to upload',
+  };
+
   const onClose = () => {
     dispatch(modalActions.onCloseModal({ modalType }));
   };
 
   const onConfirm = () => {
     if (!imageForm.file) {
+      setShowWarnMsg(true);
       return;
     }
     console.log(imageForm);
@@ -73,6 +82,7 @@ const ImageUpload: React.FC<Props> = ({}) => {
       onCancel={onClose}
       onConfirm={onConfirm}
       isLoading={isBusy}
+      warnMsg={warnMsg}
     >
       <div>
         <img
