@@ -5,7 +5,7 @@ import { CartState } from '../../redux/modules/cart/reducer';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../redux';
 import * as cartActions from '../../redux/modules/cart/actions';
-import { removeButton } from '../../components/Buttons/btnStyles';
+import { cancelButton } from '../../components/Buttons/btnStyles';
 
 const gridHeaderClasses = 'col-span-1 font-bold text-teal-700';
 
@@ -28,7 +28,7 @@ const Cart: React.FC = () => {
             <React.Fragment key={cartItem.item.id}>
               <div key={`modify-${cartItem.item.id}`} className="col-span-1">
                 <button
-                  className={removeButton}
+                  className={cancelButton}
                   onClick={() => dispatch(cartActions.removeItemFromCart(cartItem.item.id))}
                 >
                   Remove

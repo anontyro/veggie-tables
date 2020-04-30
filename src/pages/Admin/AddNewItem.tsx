@@ -2,7 +2,11 @@ import React, { useState, useEffect } from 'react';
 import AdminLayout from '../_layout/AdminLayout';
 import { MainHeader } from '../../components/Headers/MainHeader';
 import { StockItem } from '../../../types/Stock';
-import { defaultButton } from '../../components/Buttons/btnStyles';
+import {
+  defaultButton,
+  defaultButtonLayout,
+  defaultLinkText,
+} from '../../components/Buttons/btnStyles';
 import { useHistory, useLocation } from 'react-router-dom';
 import { FRONTEND_ROUTES } from '../../enum/routes';
 import { useDispatch, useSelector } from 'react-redux';
@@ -135,7 +139,7 @@ const AddNewItem: React.FC = () => {
                   });
                 }}
               />
-              <div className="space-x-4">
+              <div className={`${defaultButtonLayout}`}>
                 {id ? (
                   <button
                     type="submit"
@@ -168,6 +172,7 @@ const AddNewItem: React.FC = () => {
                 )}
                 <button
                   type="button"
+                  className={defaultLinkText}
                   onClick={(event: React.MouseEvent) => {
                     event.preventDefault();
                     dispatch(

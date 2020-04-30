@@ -1,6 +1,6 @@
 import React from 'react';
 import Modal from 'react-modal';
-import { defaultButton, defaultButtonLayout } from '../Buttons/btnStyles';
+import { defaultButton, defaultButtonLayout, cancelButton } from '../Buttons/btnStyles';
 import DefaultLoader from '../Loaders/DefaultLoader';
 import { EMPTY_FUNCTION } from '../Base/defaults';
 
@@ -31,7 +31,7 @@ const ModalBase: React.FC<Props> = ({
   isLoading = false,
   onConfirm,
 }) => {
-  const modalOnRequestClose = isLoading ? () => {} : onRequestClose;
+  const modalOnRequestClose = isLoading ? EMPTY_FUNCTION : onRequestClose;
   const onClickConfirm = onClickEvent(onConfirm);
   const onClickCancel = onClickEvent(onCancel, onRequestClose);
 
@@ -70,13 +70,13 @@ const ModalBase: React.FC<Props> = ({
         {isLoading ? (
           <DefaultLoader />
         ) : (
-          <div className={`${defaultButtonLayout} space-x-4`}>
+          <div className={`${defaultButtonLayout}`}>
             {onConfirm && (
               <button className={defaultButton} onClick={onClickConfirm}>
                 Confirm
               </button>
             )}
-            <button className={defaultButton} onClick={onClickCancel}>
+            <button className={cancelButton} onClick={onClickCancel}>
               Cancel
             </button>
           </div>

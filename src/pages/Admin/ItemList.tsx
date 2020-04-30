@@ -6,7 +6,7 @@ import { StockState } from '../../redux/modules/stock/reducer';
 import { RootState } from '../../redux';
 import * as stockActions from '../../redux/modules/stock/actions';
 import { FRONTEND_ROUTES } from '../../enum/routes';
-import { removeButton } from '../../components/Buttons/btnStyles';
+import { editButton, cancelButton } from '../../components/Buttons/btnStyles';
 import { useHistory } from 'react-router-dom';
 import HTTP_VERB from '../../enum/http';
 import StockItemCard from '../../components/Cards/StockItemCard';
@@ -51,14 +51,14 @@ const ItemList: React.FC = () => {
                   onClick={() =>
                     history.push(`${FRONTEND_ROUTES.ADMIN.ADD_ITEM}?id=${stockItem.id}`)
                   }
-                  className={`${removeButton} mr-2`}
+                  className={`${editButton} `}
                 >
                   Edit
                 </button>
                 <button
                   disabled={isUpdating}
                   onClick={() => setRemoveId(stockItem.id)}
-                  className={removeButton}
+                  className={cancelButton}
                 >
                   Delete
                 </button>
