@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import {
   MainFooter,
-  MainNav,
-  NavMenu,
   ContentContainer,
   PageContent,
   FooterContainer,
@@ -15,6 +13,7 @@ import MainModal from '../../components/Modals';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux';
 import AdminSideMenu from './components/SideMenu/AdminSideMenu';
+import PullOutSideMenu from './components/SideMenu/PullOutSideMenu';
 
 interface Props {
   children: React.ReactChild;
@@ -28,32 +27,6 @@ const AdminLayout: React.FC<Props> = ({ children, isBusy }) => {
 
   return (
     <React.Fragment>
-      <MainNav>
-        <NavMenu>
-          <NavLink isActive={pathname === FRONTEND_ROUTES.HOME} to={FRONTEND_ROUTES.HOME}>
-            Veggie Tables
-          </NavLink>
-          <NavLink
-            isActive={pathname === FRONTEND_ROUTES.ADMIN.ITEM_LIST}
-            to={FRONTEND_ROUTES.ADMIN.ITEM_LIST}
-          >
-            Item List
-          </NavLink>
-          <NavLink
-            isActive={pathname === FRONTEND_ROUTES.ADMIN.ADD_ITEM}
-            to={FRONTEND_ROUTES.ADMIN.ADD_ITEM}
-          >
-            Add Item
-          </NavLink>
-          <button
-            onClick={() => {
-              setIsSideMenuOpen(!isSideMenuOpen);
-            }}
-          >
-            Open
-          </button>
-        </NavMenu>
-      </MainNav>
       <ContentContainer className="content">
         {isBusy ? <p>Loading...</p> : <PageContent>{children}</PageContent>}
       </ContentContainer>
@@ -67,6 +40,31 @@ const AdminLayout: React.FC<Props> = ({ children, isBusy }) => {
       </MainFooter>
       <MainModal activeModal={modalType} />
       <AdminSideMenu isOpen={isSideMenuOpen} setIsOpen={setIsSideMenuOpen} />
+      <PullOutSideMenu>
+        <React.Fragment>
+          <li>
+            <NavLink isActive={pathname === FRONTEND_ROUTES.HOME} to={FRONTEND_ROUTES.HOME}>
+              Home
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              isActive={pathname === FRONTEND_ROUTES.ADMIN.ITEM_LIST}
+              to={FRONTEND_ROUTES.ADMIN.ITEM_LIST}
+            >
+              Item List
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              isActive={pathname === FRONTEND_ROUTES.ADMIN.ADD_ITEM}
+              to={FRONTEND_ROUTES.ADMIN.ADD_ITEM}
+            >
+              Add Item
+            </NavLink>
+          </li>
+        </React.Fragment>
+      </PullOutSideMenu>
     </React.Fragment>
   );
 };
