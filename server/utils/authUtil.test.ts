@@ -1,4 +1,4 @@
-import { IUser } from '../database/user/entity';
+import { IUser } from './authUtil';
 import { createNewToken, validateToken, isValidJWTFormat } from './authUtil';
 
 const mockUser: IUser = {

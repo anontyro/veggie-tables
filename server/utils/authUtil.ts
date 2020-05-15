@@ -1,5 +1,13 @@
 import jwt from 'jsonwebtoken';
-import { IUser } from '../database/user/entity';
+
+export interface IUser {
+  id: number;
+  firstName: string;
+  lastName: string;
+  isActive: boolean;
+  email: string;
+  password: string;
+}
 
 require('dotenv').config();
 
