@@ -6,8 +6,6 @@ import * as userActions from '../../redux/modules/user/actions';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-const WRONG_LOGIN = 'no user found with that username and password';
-
 interface LoginForm {
   email: string;
   password: string;
@@ -35,15 +33,19 @@ const AdminLogin: React.FC<Props> = () => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            query: `{ Login(password: "${userLogin.password}", email:"${userLogin.email}")}`,
+            // query: `{ Login(password: "${userLogin.password}", email:"${userLogin.email}")}`,
+            email: userLogin.email,
+            password: userLogin.password,
           }),
         });
         const json = await response.json();
-        const login: string = json.data.Login;
-        if (login.includes(WRONG_LOGIN)) {
+
+        console.log(response);
+        if (response.status !== 200) {
           setFailedLogin(true);
           setIsSubmitted(false);
         } else {
+          const login: string = json.token;
           dispatch(
             userActions.addUser({
               username: userLogin.email,
@@ -74,6 +76,7 @@ const AdminLogin: React.FC<Props> = () => {
               email
             </label>
             <input
+              disabled={isSubmitted}
               value={userLogin.email}
               onChange={(event: React.FormEvent<HTMLInputElement>) => {
                 setUserLogin({
@@ -91,6 +94,7 @@ const AdminLogin: React.FC<Props> = () => {
               Password
             </label>
             <input
+              disabled={isSubmitted}
               type="password"
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="password"
@@ -105,18 +109,22 @@ const AdminLogin: React.FC<Props> = () => {
               <p className="text-red-500 text-xs italic">Wrong login detail provided</p>
             )}
           </div>
-          <button
-            onClick={(event: React.MouseEvent) => {
-              event.preventDefault();
-              if (userLogin.email.length > 0 && userLogin.password.length > 0) {
-                setIsSubmitted(true);
-              }
-            }}
-            className={defaultButton}
-            type="submit"
-          >
-            Sign In
-          </button>
+          {isSubmitted ? (
+            <div>Loading...</div>
+          ) : (
+            <button
+              onClick={(event: React.MouseEvent) => {
+                event.preventDefault();
+                if (userLogin.email.length > 0 && userLogin.password.length > 0) {
+                  setIsSubmitted(true);
+                }
+              }}
+              className={defaultButton}
+              type="submit"
+            >
+              Sign In
+            </button>
+          )}
         </form>
       </div>
     </React.Fragment>

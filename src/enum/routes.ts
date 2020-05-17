@@ -5,7 +5,8 @@ export const BACKEND_ROUTES = {
 };
 
 export const AUTH_ROUTES = {
-  LOGIN: 'https://alexwilkinson.co/graphql',
+  LOGIN_GQL: 'https://alexwilkinson.co/graphql',
+  LOGIN: 'https://auth.alexwilkinson.co/user/authenticate',
 };
 
 export const FRONTEND_ROUTES = {
