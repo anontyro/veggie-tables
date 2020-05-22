@@ -4,7 +4,7 @@ import { Controller, Get, Post, Delete, Put, Middleware } from '@overnightjs/cor
 import { Logger } from '@overnightjs/logger';
 import { Request, Response } from 'express';
 import connection from '../connection';
-import Stock from '../database/stock/entity';
+import Stock from '../database/stock/Stock';
 import { Like } from 'typeorm';
 import { scanDirectories, saveFile } from '../utils/fileSystemUtils';
 import authMiddleware from '../middleware/authMiddleware';

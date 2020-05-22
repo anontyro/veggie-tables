@@ -40,7 +40,6 @@ const AdminLogin: React.FC<Props> = () => {
         });
         const json = await response.json();
 
-        console.log(response);
         if (response.status !== 200) {
           setFailedLogin(true);
           setIsSubmitted(false);

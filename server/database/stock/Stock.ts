@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, Generated } from 'typeorm';
 
 @Entity()
 export default class Stock extends BaseEntity {
@@ -22,4 +22,8 @@ export default class Stock extends BaseEntity {
 
   @Column({ nullable: true, type: 'text' })
   description: string;
+
+  @Generated('uuid')
+  @Column({ name: 'stock_code' })
+  stockCode: string;
 }
