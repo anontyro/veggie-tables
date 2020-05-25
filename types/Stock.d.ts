@@ -1,3 +1,7 @@
+export type RecursivePartial<T> = {
+  [P in keyof T]?: RecursivePartial<T[P]>;
+};
+
 export interface StockItem {
   id?: number;
   name: string;
@@ -6,6 +10,7 @@ export interface StockItem {
   imageUrl?: string;
   stockLevel: number;
   description?: string;
+  stockCode: string;
 }
 
 export interface StockImage {
@@ -16,4 +21,19 @@ export interface StockImage {
 export interface StockImageForm {
   image: File;
   dir?: string;
+}
+
+export interface StockDetails {
+  id?: number;
+  body: string;
+  stockCode: string;
+  title: string;
+  isShown: boolean;
+  order: number;
+}
+
+export interface StockCompleteItem {
+  item: StockItem;
+  promotions?: [];
+  details?: StockDetails[];
 }

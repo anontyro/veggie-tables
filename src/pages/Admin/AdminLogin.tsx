@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { MainHeader } from '../../components/Headers/MainHeader';
 import { defaultButton } from '../../components/Buttons/btnStyles';
@@ -40,7 +41,6 @@ const AdminLogin: React.FC<Props> = () => {
         });
         const json = await response.json();
 
-        console.log(response);
         if (response.status !== 200) {
           setFailedLogin(true);
           setIsSubmitted(false);
