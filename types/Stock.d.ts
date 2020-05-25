@@ -1,3 +1,7 @@
+export type RecursivePartial<T> = {
+  [P in keyof T]?: RecursivePartial<T[P]>;
+};
+
 export interface StockItem {
   id?: number;
   name: string;
@@ -30,6 +34,6 @@ export interface StockDetails {
 
 export interface StockCompleteItem {
   item: StockItem;
-  promotions: [];
-  details: StockDetails[];
+  promotions?: [];
+  details?: StockDetails[];
 }

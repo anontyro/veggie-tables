@@ -10,7 +10,7 @@ import {
   FETCHED_STOCK_IMG_LIST,
   ADDED_STOCK_IMG,
 } from './consts';
-import { StockItem, StockImage, StockImageForm } from '../../../../types/Stock';
+import { StockItem, StockImage, StockImageForm, StockCompleteItem } from '../../../../types/Stock';
 import { ThunkDispatch } from 'redux-thunk';
 import { RootState } from '../..';
 import { BACKEND_ROUTES } from '../../../enum/routes';
@@ -35,7 +35,7 @@ interface FetchingItemDetails {
 
 interface FetchedItemDetails {
   type: FETCHED_ITEM_DETAILS;
-  payload: StockItem;
+  payload: StockCompleteItem;
 }
 
 interface FetchingStockImgList {
@@ -91,7 +91,7 @@ const fetchingItemDetails = (): FetchingItemDetails => ({
   type: FETCHING_ITEM_DETAILS,
 });
 
-const fetchedItemDetails = (stockItem: StockItem): FetchedItemDetails => ({
+const fetchedItemDetails = (stockItem: StockCompleteItem): FetchedItemDetails => ({
   type: FETCHED_ITEM_DETAILS,
   payload: stockItem,
 });
@@ -134,9 +134,11 @@ export const fetchStockList = (getFresh = false) => {
 
     dispatch(fetchingStockList());
     try {
-      const json: { response: StockItem[] } = await itemFetcher({ url: BACKEND_ROUTES.STOCK_ROOT });
+      const json: { response: { stockList: StockItem[] } } = await itemFetcher({
+        url: BACKEND_ROUTES.STOCK_ROOT,
+      });
 
-      dispatch(fetchedStockList(json.response));
+      dispatch(fetchedStockList(json.response.stockList));
     } catch (err) {
       console.error(err);
     }
@@ -147,20 +149,20 @@ export const fetchItemDetail = (id: number) => {
   return async (dispatch: ThunkDispatch<unknown, undefined, StockActions>, getState) => {
     const state: RootState = getState();
 
-    if (state.stock?.currentItem?.id === id) {
+    if (state.stock?.currentItem?.item?.id === id) {
       return;
     }
 
-    const itemInStore = state.stock.stockList.find(item => item.id === id);
+    // const itemInStore = state.stock.stockList.find(item => item.id === id);
 
-    if (itemInStore) {
-      dispatch(fetchedItemDetails(itemInStore));
-      return;
-    }
+    // if (itemInStore) {
+    //   dispatch(fetchedItemDetails(itemInStore));
+    //   return;
+    // }
 
     dispatch(fetchingItemDetails());
     try {
-      const json: { response: StockItem } = await itemFetcher({
+      const json: { response: StockCompleteItem } = await itemFetcher({
         url: `${BACKEND_ROUTES.STOCK_ROOT}/${id}`,
       });
 
@@ -227,11 +229,11 @@ export const fetchStockImgList = (getFresh = false) => {
     dispatch(fetchingStockImgList());
 
     try {
-      const { response }: { response: StockImage[] } = await itemFetcher({
+      const { response }: { response: { images: StockImage[] } } = await itemFetcher({
         url: BACKEND_ROUTES.STOCK_IMG_LIST,
       });
 
-      dispatch(fetchedStockImgList(response));
+      dispatch(fetchedStockImgList(response.images));
     } catch (err) {
       console.error(err);
     }

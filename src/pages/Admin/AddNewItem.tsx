@@ -44,7 +44,7 @@ const AddNewItem: React.FC = () => {
 
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [nextItem, setNextItem] = useState<Partial<StockItem>>(defaultItem);
-  const headerText = id ? `Update ${currentItem?.name}` : `Add New Item `;
+  const headerText = id ? `Update ${currentItem?.item?.name}` : `Add New Item `;
 
   useEffect(() => {
     dispatch(stockActions.fetchStockImgList());
@@ -54,7 +54,7 @@ const AddNewItem: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (id && currentItem?.id === +id) {
+    if (id && currentItem?.item?.id === +id) {
       setNextItem({
         ...nextItem,
         ...currentItem,

@@ -24,18 +24,18 @@ const Item: React.FC = () => {
     <MainLayout isBusy={stockState.isBusy}>
       {currentItem && (
         <React.Fragment>
-          <MainHeader text={`${currentItem.name}`} />
+          <MainHeader text={`${currentItem?.item?.name}`} />
           <div className="flex flex-row flex-wrap sm:w-5/6 sm:m-auto">
             <div className="m-6">
               <img
-                src={`${currentItem.imageUrl}`}
-                alt={currentItem.name}
+                src={`${currentItem?.item?.imageUrl}`}
+                alt={currentItem?.item?.name}
                 className="object-fill w-32 h-32 flex rounded"
               />
               <AddToCart item={currentItem as StockItem} styles="w-full" />
             </div>
             <div className="m-6 flex-grow">
-              <p>{currentItem.description}</p>
+              <p>{currentItem?.item?.description}</p>
             </div>
           </div>
         </React.Fragment>

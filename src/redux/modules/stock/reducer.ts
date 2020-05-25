@@ -1,4 +1,9 @@
-import { StockItem, StockImage } from '../../../../types/Stock';
+import {
+  StockItem,
+  StockImage,
+  StockCompleteItem,
+  RecursivePartial,
+} from '../../../../types/Stock';
 import { StockActions } from './actions';
 import {
   FETCHING_STOCK_LIST,
@@ -17,7 +22,7 @@ import HTTP_VERB from '../../../enum/http';
 export interface StockState {
   stockList: StockItem[];
   stockImageList: StockImage[];
-  currentItem: Partial<StockItem>;
+  currentItem: RecursivePartial<StockCompleteItem>;
   update: {
     httpVerb: HTTP_VERB | null;
     isUpdating: boolean;
@@ -92,7 +97,9 @@ const stock = (state: StockState = INITIAL_STATE, action: StockActions): StockSt
     case UPDATED_STOCK_ITEM:
       return {
         ...state,
-        currentItem: action.payload,
+        currentItem: {
+          item: action.payload,
+        },
         update: {
           ...state.update,
           isUpdating: false,
