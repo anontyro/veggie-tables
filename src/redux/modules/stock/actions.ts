@@ -14,7 +14,7 @@ import { StockItem, StockImage, StockImageForm, StockCompleteItem } from '../../
 import { ThunkDispatch } from 'redux-thunk';
 import { RootState } from '../..';
 import { BACKEND_ROUTES } from '../../../enum/routes';
-import itemFetcher, { COMMON_HEADERS } from '../../../apiHelpers/itemFetcher';
+import itemFetcher from '../../../apiHelpers/itemFetcher';
 import HTTP_VERB from '../../../enum/http';
 import { getBearerHeader } from '../user/reducer';
 import { ItemFetcher } from '../../../apiHelpers/itemFetcher';

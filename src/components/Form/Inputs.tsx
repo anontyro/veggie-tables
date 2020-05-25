@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { StockImage } from '../../../types/Stock';
 import { convertKebabCase } from '../../utils/string';
 

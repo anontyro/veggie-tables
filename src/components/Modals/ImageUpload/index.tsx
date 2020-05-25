@@ -39,7 +39,7 @@ const ImageUploadForm: React.FC<ImageFormProps> = ({ imageForm, setImageForm }) 
 
 interface Props {}
 
-const ImageUpload: React.FC<Props> = ({}) => {
+const ImageUpload: React.FC<Props> = () => {
   const dispatch = useDispatch();
   const [showWarnMsg, setShowWarnMsg] = useState(false);
   const {
