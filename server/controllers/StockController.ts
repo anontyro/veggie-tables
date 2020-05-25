@@ -104,7 +104,7 @@ class StockController {
         }
         return sendHttpResponse({
           res,
-          response: { output: stockList },
+          response: { stockList },
         });
       });
     } catch (err) {
