@@ -1,4 +1,4 @@
-import { OK, BAD_REQUEST } from 'http-status-codes';
+import { BAD_REQUEST } from 'http-status-codes';
 import * as path from 'path';
 import { Controller, Get, Post, Delete, Put, Middleware } from '@overnightjs/core';
 import { Logger } from '@overnightjs/logger';
@@ -12,12 +12,14 @@ import formidableMiddleware from 'express-formidable';
 import StockInformation from '../database/stock/StockInformation';
 import { StockCompleteItem } from '../../types/Stock';
 import { sendHttpResponse } from '../utils/responseUtil';
+import PromotionTypes from '../database/promotion/PromotionTypes';
+import StockPromotions from '../database/stock/StockPromotions';
 
 const getImageRoot = () => path.join((global as any).appRoot, './static/images');
 
 interface stockArgs {
   details?: StockInformation[];
-  promotions?: [];
+  promotions?: any;
 }
 
 const buildStockOutput = (item: Stock, res: Response) => ({
@@ -138,7 +140,15 @@ class StockController {
             },
           });
 
-          return response({ details });
+          const promotions = await connection.getRepository(StockPromotions).find({
+            relations: ['promotionTypes'],
+            where: {
+              stockCode: item.stockCode,
+              isActive: true,
+            },
+          });
+
+          return response({ details, promotions });
         }
 
         return response();

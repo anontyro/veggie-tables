@@ -1,4 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, Generated } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  BaseEntity,
+  Generated,
+  OneToOne,
+  JoinColumn,
+} from 'typeorm';
+import PromotionTypes from '../promotion/PromotionTypes';
 
 @Entity()
 export default class StockPromotions extends BaseEntity {
@@ -17,12 +26,13 @@ export default class StockPromotions extends BaseEntity {
   @Column({ name: 'limited_quantity', type: 'tinyint', nullable: true })
   limitedQuantity: boolean;
 
-  @Column({ name: 'promotion_type_id', type: 'int' })
-  promotionTypeId: number;
-
   @Column({ name: 'promotion_offer', nullable: true })
   promotionOffer: string;
 
   @Column({ name: 'is_active', nullable: true, type: 'tinyint' })
   isActive;
+
+  @OneToOne(type => PromotionTypes)
+  @JoinColumn()
+  promotionTypes: PromotionTypes;
 }

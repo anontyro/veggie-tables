@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Delete, Put, Middleware } from '@overnightjs/core';
+import { Controller, Get } from '@overnightjs/core';
 import connection from '../connection';
 import PromotionTypes from '../database/promotion/PromotionTypes';
 import { sendHttpResponse } from '../utils/responseUtil';
