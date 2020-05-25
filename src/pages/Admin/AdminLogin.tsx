@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { MainHeader } from '../../components/Headers/MainHeader';
 import { defaultButton } from '../../components/Buttons/btnStyles';

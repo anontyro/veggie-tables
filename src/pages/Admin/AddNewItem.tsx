@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import AdminLayout from '../_layout/AdminLayout';
 import { MainHeader } from '../../components/Headers/MainHeader';

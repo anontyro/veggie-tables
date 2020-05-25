@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
 import MainLayout from '../_layout/MainLayout';
 import { MainHeader } from '../../components/Headers/MainHeader';
