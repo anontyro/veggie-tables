@@ -16,7 +16,7 @@ interface Props {}
 
 const CartList: React.FC<Props> = () => {
   const cartState: CartState = useSelector((state: RootState) => state.userCart);
-  const subTotal: number = useSelector((state: RootState) => cartSubTotal(state.userCart));
+  const subTotal = useSelector((state: RootState) => cartSubTotal(state.userCart)).toFixed(2);
   const { cart } = cartState;
 
   return (
@@ -42,7 +42,7 @@ const CartList: React.FC<Props> = () => {
 
             <div key={`price-${cartItem.item.id}`} className="col-span-1">
               <div className="flex items-center justify-center h-full">
-                {cartItem.item.unitPrice * cartItem.quantity}
+                {(cartItem.item.unitPrice * cartItem.quantity).toFixed(2)}
               </div>
             </div>
             <div key={`name-${cartItem.item.id}`} className="col-span-1">
