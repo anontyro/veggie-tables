@@ -8,7 +8,8 @@ import { StockState } from '../../redux/modules/stock/reducer';
 import { RootState } from '../../redux';
 import * as stockActions from '../../redux/modules/stock/actions';
 import AddToCart from '../../components/Buttons/AddToCart';
-import { StockItem } from '../../../types/Stock';
+import { StockItem, StockDetails } from '../../../types/Stock';
+import ItemDetailItem from './components/ItemDetailItem';
 
 const Item: React.FC = () => {
   const { id } = useParams();
@@ -25,18 +26,28 @@ const Item: React.FC = () => {
     <MainLayout isBusy={stockState.isBusy}>
       {currentItem && (
         <React.Fragment>
-          <MainHeader text={`${currentItem?.item?.name}`} />
-          <div className="flex flex-row flex-wrap sm:w-5/6 sm:m-auto">
-            <div className="m-6">
-              <img
-                src={`${currentItem?.item?.imageUrl}`}
-                alt={currentItem?.item?.name}
-                className="object-fill w-32 h-32 flex rounded"
-              />
-              <AddToCart item={currentItem as StockItem} styles="w-full" />
+          <div className="flex flex-col sm:w-5/6 m-6 sm:m-auto">
+            <MainHeader text={`${currentItem?.item?.name}`} classOverride="uppercase" />
+            <div className="flex flex-row flex-wrap mb-6">
+              <div className="flex-grow">
+                <img
+                  src={`${currentItem?.item?.imageUrl}`}
+                  alt={currentItem?.item?.name}
+                  className="object-fill w-32 h-32 flex rounded"
+                />
+              </div>
+              <div className="ml-6 flex-grow">
+                <div className="text-2xl my-2 text-left">{`Price: ${currentItem.item.currency} ${currentItem.item.unitPrice}`}</div>
+                <div className="w-32">
+                  <AddToCart item={currentItem.item as StockItem} styles="w-full" />
+                </div>
+              </div>
             </div>
-            <div className="m-6 flex-grow">
-              <p>{currentItem?.item?.description}</p>
+            <p className="">{currentItem?.item?.description}</p>
+            <div className="item-info flex-col py-6">
+              {currentItem?.details.length > 0 && (
+                <ItemDetailItem detailList={currentItem.details as StockDetails[]} />
+              )}
             </div>
           </div>
         </React.Fragment>
